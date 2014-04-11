@@ -8,6 +8,10 @@
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
+	<?php
+		$i = 5;
+		echo $i;
+	?>
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -19,7 +23,7 @@
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="browseparts.php">Browse all parts</a></li>
+							<li><a href="partlist.php">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
 							<li><a href="#">Processors</a></li>
@@ -49,7 +53,7 @@
     </div>
     
 	<div class="container body-content">
-
+		
 		<hr />
 		<footer>
 			<p>&copy; 2014 - Computer Parts Store</p>
