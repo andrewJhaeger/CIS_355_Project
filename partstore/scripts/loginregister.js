@@ -14,4 +14,54 @@ $(function () {
 			$('#addBillingSpan').html("<button type='button' id='addBillingAddress' class='btn btn-info btn-xs'>Add a separate billing address</button> (If different than shipping address)");
 		}
 	});
+
+	$.validator.setDefaults({
+	    highlight: function(element) {
+	        $(element).closest('.form-group').removeClass('has-success');
+	        $(element).closest('.form-group').addClass('has-error');
+	    },
+	    unhighlight: function(element) {
+	        $(element).closest('.form-group').removeClass('has-error');
+	        $(element).closest('.form-group').addClass('has-success');
+	    },
+	    errorElement: 'span',
+	    errorClass: 'help-block',
+	    errorPlacement: function(error, element) {
+	        if(element.parent('.input-group').length) {
+	            error.insertAfter(element.parent());
+	        } else {
+	            error.insertAfter(element);
+	        }
+	    }
+	});
+	$.validator.messages.required = 'Required';
+	$('#loginForm').validate({
+		rules: {
+			loginEmail: {required: true, email: true},
+			loginPassword: "required"
+		}
+	});
+	$('#registerForm').validate({
+		rules: {
+			firstName: {required: true, maxlength: 30},
+			lastName: {required: true, maxlength: 30},
+			middleInitial: {maxlength: 1},
+			registerEmail: {required: true, email: true},
+			registerPassword: {required: true, minlength: 5},
+			registerConfirmPassword: {required: true, equalTo: "#registerPassword"},
+			homePhone: {phoneUS: true},
+			cellPhone: {phoneUS: true},
+			shippingStreet: {required: true, maxlength: 100},
+			shippingCity: {required: true, maxlength: 50},
+			shippingState: "required",
+			shippingZip: {required: true, maxlength: 10},
+			billingStreet: {required: true, maxlength: 100},
+			billingCity: {required: true, maxlength: 50},
+			billingState: "required",
+			billingZip: {required: true, maxlength: 10}
+		},
+		messages: {
+			registerConfirmPassword: {equalTo: "Passwords must match"}
+		}
+	});
 });

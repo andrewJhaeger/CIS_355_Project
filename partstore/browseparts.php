@@ -8,10 +8,6 @@
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
-	<?php
-		$i = 5;
-		echo $i;
-	?>
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -53,7 +49,7 @@
     </div>
     
 	<div class="container body-content">
-		
+		<p>I love paragraphs</p>
 		<hr />
 		<footer>
 			<p>&copy; 2014 - Computer Parts Store</p>
