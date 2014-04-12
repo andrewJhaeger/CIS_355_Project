@@ -12,3 +12,30 @@
 	margin-top: 5px;
 	margin-bottom: 10px;
 }
+
+.productImage {
+	width: 100px;
+}
+
+#productList {
+	margin-bottom: 0px;
+}
+
+#productList dt {
+	text-align: left;
+}
+
+#tablePaginator {
+	text-align: right;
+}
+.pagination li a {
+	background-color: #2c3e50;
+}
+
+.pagination li a:hover {
+	background-color: #385067;
+}
+
+.pagination>.active>a {
+	background-color: #4a6886;
+}
