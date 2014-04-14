@@ -11,11 +11,11 @@
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -41,7 +41,7 @@
 					</li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="loginregister.html">Login/Register</a></li>
+					<li><a href="loginregister.php">Login/Register</a></li>
 					<li><a href="#">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
