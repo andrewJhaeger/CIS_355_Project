@@ -144,11 +144,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					</form>
 				</div>
 			</div>
+		</div>
 		<hr />
 		<footer>
 			<p>&copy; 2014 - Computer Parts Store</p>
 		</footer>
-		</div>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/jquery.validate.min.js"></script>

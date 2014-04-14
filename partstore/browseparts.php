@@ -53,7 +53,7 @@
 		<table class="table table-bordered" id="productList">
 				<thead>
 					<tr>
-						<th>Image</th><th>Product Information</th><th>Product Specifications</th>
+						<th>Image</th><th>Product Information</th><th>Image</th><th>Product Information</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -71,19 +71,19 @@
 								<dt>Rating (out of 5):</dt>
 								<dd>4.34</dd>
 							</dl>
-						</td>
+						<td><img src="images/samplemonitor.png" class="productImage" /></td>
 						<td>
+							<a href="#">ASUS Sample Monitor</a><br />
 							<dl class="dl-horizontal">
-								<dt>Slot Type:</dt>
-								<dd>PCI Expreess 3.0</dd>
-								<dt>Memory:</dt>
-								<dd>2GB</dd>
-								<dt>Ports:</dt>
-								<dd>DVI x2, HDMI</dd>
-								<dt>Core Clock:</dt>
-								<dd>1072MHz</dd>
+								<dt>Price:</dt>
+								<dd>$149.99</dd>
+								<dt>Manufacturer</dt>
+								<dd>ASUS</dd>
+								<dt>Model #:</dt>
+								<dd>4DS03AV</dd>
+								<dt>Rating (out of 5):</dt>
+								<dd>4.88</dd>
 							</dl>
-							<a href="#">more...</a>
 						</td>
 					</tr>
 					<tr>
@@ -101,21 +101,6 @@
 								<dd>4.88</dd>
 							</dl>
 						</td>
-						<td>
-							<dl class="dl-horizontal">
-								<dt>Screen Size:</dt>
-								<dd>21.5"</dd>
-								<dt>Recommended Resolution:</dt>
-								<dd>1920 x 1080</dd>
-								<dt>Output:</dt>
-								<dd>VGA, DVI, HDMI</dd>
-								<dt>Speakers:</dt>
-								<dd>None</dd>
-							</dl>
-							<a href="#">more...</a>
-						</td>
-					</tr>
-					<tr>
 						<td><img src="images/samplessd.png" class="productImage" /></td>
 						<td>
 							<a href="#">Samsung Sample SSD</a><br />
@@ -129,19 +114,6 @@
 								<dt>Rating (out of 5):</dt>
 								<dd>4.14</dd>
 							</dl>
-						</td>
-						<td>
-							<dl class="dl-horizontal">
-								<dt>Capacity:</dt>
-								<dd>256GB</dd>
-								<dt>Size:</dt>
-								<dd>2.5"</dd>
-								<dt>Max Read Speed:</dt>
-								<dd>540 MB/s</dd>
-								<dt>Max Write Speed:</dt>
-								<dd>520 MB/s</dd>
-							</dl>
-							<a href="#">more...</a>
 						</td>
 					</tr>			
 				</tbody>
