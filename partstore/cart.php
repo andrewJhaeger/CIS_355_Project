@@ -19,7 +19,7 @@
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="partlist.php">Browse all parts</a></li>
+							<li><a href="browseparts.php">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
 							<li><a href="#">Processors</a></li>
@@ -41,93 +41,78 @@
 					</li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="loginregister.php">Login/Register</a></li>
-					<li><a href="#">Cart &nbsp;<span class="badge">4</span></a></li>
+					<li><a href="loginregister.phpl">Login/Register</a></li>
+					<li><a href="#">Cart &nbsp;<span class="badge">-</span></a></li>
 				</ul>
             </div>
         </div>
     </div>
     
 	<div class="container body-content">
-		<legend>All Products</legend>
-		<table class="table table-bordered productTable" id="productList">
-				<thead>
-					<tr>
-						<th>Image</th><th>Product Information</th><th>Image</th><th>Product Information</th>
-					</tr>
-				</thead>
-				<tbody>
+		<legend>Shopping Cart</legend>
+		<div class="row">
+			<form id="cartForm" action="checkout.php" method="post">
+				<table class="table table-bordered productTable" id="cartTable">
+					<tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th></tr>
 					<tr>
 						<td><img src="images/samplegraphicscard.png" class="productImage" /></td>
-						<td>
-							<a href="#">EVGA GeForce GTX Sample Graphics Card</a><br />
+						<td>			
+							<a href="#">EVGA GeForce GTX Sample Graphics Card</a><br />				
 							<dl class="dl-horizontal">
-								<dt>Price:</dt>
-								<dd>$199.99</dd>
-								<dt>Manufacturer</dt>
-								<dd>EVGA</dd>
-								<dt>Model #:</dt>
-								<dd>0123456789</dd>
-								<dt>Rating (out of 5):</dt>
-								<dd>4.34</dd>
-							</dl>
-						<td><img src="images/samplemonitor.png" class="productImage" /></td>
-						<td>
-							<a href="#">ASUS Sample Monitor</a><br />
-							<dl class="dl-horizontal">
-								<dt>Price:</dt>
-								<dd>$149.99</dd>
-								<dt>Manufacturer</dt>
-								<dd>ASUS</dd>
-								<dt>Model #:</dt>
-								<dd>4DS03AV</dd>
-								<dt>Rating (out of 5):</dt>
-								<dd>4.88</dd>
-							</dl>
+									<dt>Manufacturer</dt>
+									<dd>EVGA</dd>
+									<dt>Model #:</dt>
+									<dd>0123456789</dd>
+									<dt>Rating (out of 5):</dt>
+									<dd>4.34</dd>
+								</dl>
 						</td>
+						<td class="cartPrice">$199.99</td>
+						<td><input type="number" class="quantityInput" name="" /></td>
 					</tr>
 					<tr>
 						<td><img src="images/samplemonitor.png" class="productImage" /></td>
-						<td>
-							<a href="#">ASUS Sample Monitor</a><br />
+						<td>			
+							<a href="#">ASUS Sample Monitor</a><br />				
 							<dl class="dl-horizontal">
-								<dt>Price:</dt>
-								<dd>$149.99</dd>
-								<dt>Manufacturer</dt>
-								<dd>ASUS</dd>
-								<dt>Model #:</dt>
-								<dd>4DS03AV</dd>
-								<dt>Rating (out of 5):</dt>
-								<dd>4.88</dd>
-							</dl>
+									<dt>Manufacturer</dt>
+									<dd>ASUS</dd>
+									<dt>Model #:</dt>
+									<dd>4DS03AV</dd>
+									<dt>Rating (out of 5):</dt>
+									<dd>4.88</dd>
+								</dl>
 						</td>
+						<td class="cartPrice">$149.99</td>
+						<td><input type="number" class="quantityInput" name="" /><br /></td>
+					</tr>
+					<tr>
 						<td><img src="images/samplessd.png" class="productImage" /></td>
-						<td>
-							<a href="#">Samsung Sample SSD</a><br />
+						<td>			
+							<a href="#">Samsung Sample SSD</a><br />				
 							<dl class="dl-horizontal">
-								<dt>Price:</dt>
-								<dd>$229.99</dd>
-								<dt>Manufacturer</dt>
-								<dd>Samsung</dd>
-								<dt>Model #:</dt>
-								<dd>ABCDEFG123</dd>
-								<dt>Rating (out of 5):</dt>
-								<dd>4.14</dd>
-							</dl>
+									<dt>Manufacturer</dt>
+									<dd>Samsung</dd>
+									<dt>Model #:</dt>
+									<dd>ABCDEFG123</dd>
+									<dt>Rating (out of 5):</dt>
+									<dd>4.14</dd>
+								</dl>
 						</td>
-					</tr>			
-				</tbody>
-		</table>
-		<div id="tablePaginator">
-			<ul class="pagination pagination-sm">
-				<li><a href="#">&laquo;</a></li>
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#">&raquo;</a></li>
-			</ul>
+						<td class="cartPrice">$229.99</td>
+						<td><input type="number" class="quantityInput" name="" /></td>
+					</tr>
+					<tr>
+						<th colspan="2" style="text-align:right">Total:</th>
+						<th>$579.97</th>
+						<td></td>
+					</tr>
+				</table>
+				<div style="text-align:right">
+					<button type="button" class="btn btn-primary">Update Quantities</button> 
+					<button type="submit" class="btn btn-success">Checkout</button>
+				</div>
+			</form>
 		</div>
 		<hr />
 		<footer>

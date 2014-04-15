@@ -21,7 +21,7 @@
 	margin-bottom: 0px;
 }
 
-#productList dt {
+.productTable dt {
 	text-align: left;
 }
 
@@ -38,4 +38,8 @@
 
 .pagination > .active > a {
 	background-color: #4a6886;
+}
+
+.quantityInput {
+	width: 50px;
 }
