@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					}
 					echo '</li>';
 					?>
-					<li><a href="#">Cart &nbsp;<span class="badge">4</span></a></li>
+					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
