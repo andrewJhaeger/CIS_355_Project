@@ -57,7 +57,7 @@
 					<tr>
 						<td><img src="images/samplegraphicscard.png" class="productImage" /></td>
 						<td>			
-							<a href="#">EVGA GeForce GTX Sample Graphics Card</a><br />				
+							<a href="product.php">EVGA GeForce GTX Sample Graphics Card</a><br />				
 							<dl class="dl-horizontal">
 									<dt>Manufacturer</dt>
 									<dd>EVGA</dd>
@@ -73,7 +73,7 @@
 					<tr>
 						<td><img src="images/samplemonitor.png" class="productImage" /></td>
 						<td>			
-							<a href="#">ASUS Sample Monitor</a><br />				
+							<a href="product.php">ASUS Sample Monitor</a><br />				
 							<dl class="dl-horizontal">
 									<dt>Manufacturer</dt>
 									<dd>ASUS</dd>
@@ -89,7 +89,7 @@
 					<tr>
 						<td><img src="images/samplessd.png" class="productImage" /></td>
 						<td>			
-							<a href="#">Samsung Sample SSD</a><br />				
+							<a href="product.php">Samsung Sample SSD</a><br />				
 							<dl class="dl-horizontal">
 									<dt>Manufacturer</dt>
 									<dd>Samsung</dd>

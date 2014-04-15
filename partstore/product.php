@@ -41,7 +41,7 @@
 					</li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="loginregister.phpl">Login/Register</a></li>
+					<li><a href="loginregister.php">Login/Register</a></li>
 					<li><a href="#">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
@@ -56,12 +56,12 @@
 			<div class="col-md-6">
 				<div class="well">
 					<span class="titleHeader">Intel - Core i7-4770K</span><br />
-					<span class="priceHeader">$199.99</span>
+					<span class="priceHeader">$349.99</span>
 					<dl class="dl-horizontal productInfo">
 						<dt>Manufacturer</dt>
-						<dd>EVGA</dd>
+						<dd>Intel</dd>
 						<dt>Model #:</dt>
-						<dd>0123456789</dd>
+						<dd>BX80646I74770K</dd>
 						<dt>Rating (out of 5):</dt>
 						<dd>4.34</dd>
 					</dl>
