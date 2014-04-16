@@ -33,6 +33,10 @@
 	text-align: left;
 }
 
+#receiptList dt {
+	text-align: left;
+}
+
 #tablePaginator {
 	text-align: right;
 }
