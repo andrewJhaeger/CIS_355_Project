@@ -1,7 +1,4 @@
-<?php 
-session_start();
-?>
-
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -44,19 +41,7 @@ session_start();
                     <li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li>
-					<?php 
-					if(isset($_SESSION['firstName'])) { 
-						echo '<font color="white">' . $_SESSION['firstName'] . '</font>';
-					}
-					echo '</li><li>';
-					if(isset($_SESSION['firstName'])) {
-						echo '<a href="logout.php">Log Out</a>';
-					} else {
-						echo '<a href="loginregister.php">Login/Register</a>';
-					}
-					echo '</li>';
-					?>
+					<li><a href="loginregister.php">Login/Register</a></li>
 					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
@@ -64,27 +49,39 @@ session_start();
     </div>
     
 	<div class="container body-content">
-		<div class="jumbotron">
-			<h1>Computer Parts Store</h1>
-			<p class="lead">Welcome to the Computer Parts Store! This is a simple website written in PHP for our CIS355 project.</p>
-			<p><a href="browseparts.php" class="btn btn-primary btn-large">Browse Parts Now&raquo;</a></p>
-		</div>
-
+		<h2>Q&amp;A</h2>
 		<div class="row">
-			<div class="col-md-4">
-				<h2>SSDs</h2>
-				<p>Is your machine in need of a boost? Get a lightning fast solid state drive today!</p>
-				<p><a class="btn btn-default" href="#">Shop SSDs &raquo;</a></p>
-			</div>
-			<div class="col-md-4">
-				<h2>Video Cards</h2>
-				<p>Want to build the ultimate gaming rig? Start your system with a high-powered graphics card.</p>
-				<p><a class="btn btn-default" href="#">Shop Video Cards &raquo;</a></p>
-			</div>
-			<div class="col-md-4">
-				<h2>Join our community</h2>
-				<p>Register today for the chance to personalize your visit and discuss products.</p>
-				<p><a class="btn btn-default" href="loginregister.php">Register Now! &raquo;</a></p>
+			<table class="table table-bordered">
+				<tr><th>Question</th><th>Asked By</th><th>Replies</th></tr>
+				<tr><td><a href="question.php">How do I turn on my computer?</a></td><td>Andrew</td><td>1</td></tr>
+				<tr><td><a href="question.php">Core i5 vs i7</a></td><td>Ryan</td><td>12</td></tr>
+				<tr><td><a href="question.php">How do I output from my laptop to my TV?</a></td><td>Steve</td><td>4</td></tr>
+				<tr><td><a href="question.php">I need help adding items to my cart.</a></td><td>John</td><td>1</td></tr>
+				<tr><td><a href="question.php">How do I install a graphics card?</td><td>Jane</td><td>4</td></tr>
+			</table>
+		</div>
+		<div class="row">
+			<div class="well">
+				<form class="form-horizontal" id="newQuestionForm" action="question.php" method="post">
+					<legend>New Question</legend>
+					<div class="form-group">
+						<label for="newQuestion" class="col-md-3 control-label">Question:</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="newQuestion" name="newQuestion" placeholder="Question"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="newQuestionDetails" class="col-md-3 control-label">Additional Details:</label>
+						<div class="col-md-9">
+							<textarea class="form-control" rows="3" id="newQuestionDetails" name="newQuestionDetails"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-9 col-md-offset-3">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 		<hr />

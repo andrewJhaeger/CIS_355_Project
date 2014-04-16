@@ -15,7 +15,6 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.php">Home</a></li>
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -39,19 +38,19 @@
 							<li><a href="#">Printers</a></li>
 						</ul>
 					</li>
+                    <li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="loginregister.php">Login/Register</a></li>
-					<li><a href="#">Cart &nbsp;<span class="badge">4</span></a></li>
+					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
     </div>
-    
 	<div class="container body-content">
 		<div class="row">
 			<div class="col-md-3">
-				<img src="images/products/031790888857.jpg" class="featuredProductImage" />
+				<img src="images/products/031790888857.jpg" class="img-thumbnail featuredProductImage" />
 			</div>
 			<div class="col-md-6">
 				<div class="well">
