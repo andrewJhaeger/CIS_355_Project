@@ -1,4 +1,53 @@
-<!DOCTYPE html>
+<?php 
+session_start(); 
+
+require('css/config.inc.php');
+require (MYSQL);
+
+if($_GET['category'] == 'hard_drives' || $_GET['category'] == 'ssds' || $_GET['category'] == 'external_storage')
+{
+	$cat = 'hard_drives_specs';
+} elseif($_GET['category'] <> 'all') {
+	$cat = $_GET['category'] . '_specs';
+} 
+
+$q = "SELECT * FROM " . $cat . " WHERE upc=" . $_GET['upc'];
+$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+
+$itemspecs=mysqli_fetch_array($r);
+
+mysqli_free_result($r);
+mysqli_close($dbc);
+
+function showitem($itemspecs) {
+	echo '<div class="col-md-3">
+			<img src="images/products/'.$itemspecs['upc'].'.jpg" class="featuredProductImage" />
+		  </div>
+		  <div class="col-md-6">
+		    <div class="well">
+		        <span class="titleHeader">'.$itemspecs['product_name'].'</span><br />
+		        <span class="priceHeader">'.number_format($itemspecs['price'], 2).'</span>
+		            <dl class="dl-horizontal productInfo">
+			            <dt>Manufacturer</dt>
+			            <dd>'.$itemspecs['manufacturer'].'</dd>
+			            <dt>Model #:</dt>
+			            <dd>'.$itemspecs['model_number'].'</dd>
+			            <dt>Rating (out of 5):</dt>
+			            <dd>'.$itemspecs['rating'].'</dd>
+			        </dl>';
+		 echo '<form id="addToCart" action="cart.php?upc='.$itemspecs['upc'].'" method="post">
+						<label for="addQuantity">Quantity: </label>
+						<input name = "quantity" type="number" min="0" class="quantityInput" value="1" />';
+}
+
+function showextendedspecs($itemspecs, $cat, $tables) {
+	foreach($tables[$cat] as &$spec) {
+		echo '<tr><td class="specName col-md-2">'.ucwords(str_replace("_", " ", $spec)).
+			 '</td><td>'.$itemspecs[$spec].'</td></tr>';
+	}
+}
+
+?>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,55 +67,51 @@
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="browseparts.php">Browse all parts</a></li>
+							<li><a href="browseitems.php?page=1&category=all">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
-							<li><a href="#">Processors</a></li>
-							<li><a href="#">Motherboards</a></li>
-							<li><a href="#">Memory</a></li>
-							<li><a href="#">Hard Drives</a></li>
-							<li><a href="#">SSDs</a></li>
-							<li><a href="#">Video Cards</a></li>
-							<li><a href="#">Disk Drives</a></li>
-							<li><a href="#">Cases</a></li>
+							<li><a href="browseitems.php?page=1&category=processors">Processors</a></li>
+							<li><a href="browseitems.php?page=1&category=motherboards">Motherboards</a></li>
+							<li><a href="browseitems.php?page=1&category=memory">Memory</a></li>
+							<li><a href="browseitems.php?page=1&category=hard_drives">Hard Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=ssds">SSDs</a></li>
+							<li><a href="browseitems.php?page=1&category=video_cards">Video Cards</a></li>
+							<li><a href="browseitems.php?page=1&category=disk_drives">Disk Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=cases">Cases</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Peripherals</li>
-							<li><a href="#">Monitors</a></li>
-							<li><a href="#">Keyboards</a></li>
-							<li><a href="#">Audio Devices</a></li>
-							<li><a href="#">External Storage</a></li>
-							<li><a href="#">Printers</a></li>
+							<li><a href="browseitems.php?page=1&category=monitors">Monitors</a></li>
+							<li><a href="browseitems.php?page=1&category=keyboards">Keyboards</a></li>
+							<li><a href="browseitems.php?page=1&category=audio_devices">Audio Devices</a></li>
+							<li><a href="browseitems.php?page=1&category=external_storage">External Storage</a></li>
+							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
-                    <li><a href="questions.php">Q&amp;A</a></li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="loginregister.php">Login/Register</a></li>
+					<?php 
+					if(isset($_SESSION['firstName'])) { 
+					      echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					 }
+					 echo '</li><li>';
+					 if(isset($_SESSION['firstName'])) {
+					     echo '<a href="logout.php">Log Out</a>';
+					 } else {
+					     echo '<a href="loginregister.php">Login/Register</a>';
+					 }
+					 echo '</li>';
+					?>
 					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
     </div>
+    
 	<div class="container body-content">
 		<div class="row">
-			<div class="col-md-3">
-				<img src="images/products/031790888857.jpg" class="img-thumbnail featuredProductImage" />
-			</div>
-			<div class="col-md-6">
-				<div class="well">
-					<span class="titleHeader">Intel - Core i7-4770K</span><br />
-					<span class="priceHeader">$349.99</span>
-					<dl class="dl-horizontal productInfo">
-						<dt>Manufacturer</dt>
-						<dd>Intel</dd>
-						<dt>Model #:</dt>
-						<dd>BX80646I74770K</dd>
-						<dt>Rating (out of 5):</dt>
-						<dd>4.34</dd>
-					</dl>
-					<form id="addToCart" action="cart.php" method="post">
-						<label for="addQuantity">Quantity: </label>
-						<input type="number" min="0" class="quantityInput" value="1"/>
+				<?php showitem($itemspecs); ?>
+					
 						<button type="submit" class="btn btn-primary btn-sm">
 							<span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
 						</button>
@@ -77,14 +122,13 @@
 		<div class="row">
 			<h4>Product Specifications</h4>
 			<table class="table table-bordered">
-				<tr><td class="specName col-md-2">Cores</td><td>4</td></tr>
-				<tr><td class="specName col-md-2">Clock Speed</td><td>3.5GHz</td></tr>
+				<?php showextendedspecs($itemspecs, $cat, $tables); ?>
 			</table>
 		<hr />
 		<footer>
 			<p>&copy; 2014 - Computer Parts Store</p>
 		</footer>
-	</div>
+		</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
 </body>

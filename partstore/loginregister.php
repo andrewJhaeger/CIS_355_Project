@@ -29,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if ($email && $pass) { // If everything's OK.
 
 			// Query the database:
-			$q = "SELECT id, firstName FROM user WHERE (email='$email' AND password=SHA1('$pass')) 
+			$q = "SELECT id, firstName, email FROM user WHERE (email='$email' AND password=SHA1('$pass')) 
 				  AND active IS NULL";		
 			$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 			
@@ -186,33 +186,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="browseparts.php">Browse all parts</a></li>
+							<li><a href="browseitems.php?page=1&category=all">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
-							<li><a href="#">Processors</a></li>
-							<li><a href="#">Motherboards</a></li>
-							<li><a href="#">Memory</a></li>
-							<li><a href="#">Hard Drives</a></li>
-							<li><a href="#">SSDs</a></li>
-							<li><a href="#">Video Cards</a></li>
-							<li><a href="#">Disk Drives</a></li>
-							<li><a href="#">Cases</a></li>
+							<li><a href="browseitems.php?page=1&category=processors">Processors</a></li>
+							<li><a href="browseitems.php?page=1&category=motherboards">Motherboards</a></li>
+							<li><a href="browseitems.php?page=1&category=memory">Memory</a></li>
+							<li><a href="browseitems.php?page=1&category=hard_drives">Hard Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=ssds">SSDs</a></li>
+							<li><a href="browseitems.php?page=1&category=video_cards">Video Cards</a></li>
+							<li><a href="browseitems.php?page=1&category=disk_drives">Disk Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=cases">Cases</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Peripherals</li>
-							<li><a href="#">Monitors</a></li>
-							<li><a href="#">Keyboards</a></li>
-							<li><a href="#">Audio Devices</a></li>
-							<li><a href="#">External Storage</a></li>
-							<li><a href="#">Printers</a></li>
+							<li><a href="browseitems.php?page=1&category=monitors">Monitors</a></li>
+							<li><a href="browseitems.php?page=1&category=keyboards">Keyboards</a></li>
+							<li><a href="browseitems.php?page=1&category=audio_devices">Audio Devices</a></li>
+							<li><a href="browseitems.php?page=1&category=external_storage">External Storage</a></li>
+							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
-                    <li><a href="questions.php">Q&amp;A</a></li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li>
 					<?php 
 					if(isset($_SESSION['firstName'])) { 
-						echo '<font color="white">' . $_SESSION['firstName'] . '</font>';
+						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
 					}
 					echo '</li><li>';
 					if(isset($_SESSION['firstName'])) {

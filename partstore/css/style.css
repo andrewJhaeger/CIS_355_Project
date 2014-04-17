@@ -33,10 +33,6 @@
 	text-align: left;
 }
 
-#receiptList dt {
-	text-align: left;
-}
-
 #tablePaginator {
 	text-align: right;
 }
@@ -65,4 +61,10 @@
 
 .specName {
 	background-color: #f1f1f1;
+}
+
+.userHeader {
+	padding-top: 19.5px;
+	padding-bottom: 19.5px;
+	color: #fff;
 }

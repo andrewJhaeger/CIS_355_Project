@@ -21,33 +21,32 @@ session_start();
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="browseparts.php">Browse all parts</a></li>
+							<li><a href="browseitems.php?page=1&category=all">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
-							<li><a href="#">Processors</a></li>
-							<li><a href="#">Motherboards</a></li>
-							<li><a href="#">Memory</a></li>
-							<li><a href="#">Hard Drives</a></li>
-							<li><a href="#">SSDs</a></li>
-							<li><a href="#">Video Cards</a></li>
-							<li><a href="#">Disk Drives</a></li>
-							<li><a href="#">Cases</a></li>
+							<li><a href="browseitems.php?page=1&category=processors">Processors</a></li>
+							<li><a href="browseitems.php?page=1&category=motherboards">Motherboards</a></li>
+							<li><a href="browseitems.php?page=1&category=memory">Memory</a></li>
+							<li><a href="browseitems.php?page=1&category=hard_drives">Hard Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=ssds">SSDs</a></li>
+							<li><a href="browseitems.php?page=1&category=video_cards">Video Cards</a></li>
+							<li><a href="browseitems.php?page=1&category=disk_drives">Disk Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=cases">Cases</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Peripherals</li>
-							<li><a href="#">Monitors</a></li>
-							<li><a href="#">Keyboards</a></li>
-							<li><a href="#">Audio Devices</a></li>
-							<li><a href="#">External Storage</a></li>
-							<li><a href="#">Printers</a></li>
+							<li><a href="browseitems.php?page=1&category=monitors">Monitors</a></li>
+							<li><a href="browseitems.php?page=1&category=keyboards">Keyboards</a></li>
+							<li><a href="browseitems.php?page=1&category=audio_devices">Audio Devices</a></li>
+							<li><a href="browseitems.php?page=1&category=external_storage">External Storage</a></li>
+							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
-                    <li><a href="questions.php">Q&amp;A</a></li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li>
 					<?php 
 					if(isset($_SESSION['firstName'])) { 
-						echo '<font color="white">' . $_SESSION['firstName'] . '</font>';
+						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
 					}
 					echo '</li><li>';
 					if(isset($_SESSION['firstName'])) {
@@ -67,19 +66,19 @@ session_start();
 		<div class="jumbotron">
 			<h1>Computer Parts Store</h1>
 			<p class="lead">Welcome to the Computer Parts Store! This is a simple website written in PHP for our CIS355 project.</p>
-			<p><a href="browseparts.php" class="btn btn-primary btn-large">Browse Parts Now&raquo;</a></p>
+			<p><a href="browseitems.php?page=1&category=all" class="btn btn-primary btn-large">Browse Parts Now&raquo;</a></p>
 		</div>
 
 		<div class="row">
 			<div class="col-md-4">
 				<h2>SSDs</h2>
 				<p>Is your machine in need of a boost? Get a lightning fast solid state drive today!</p>
-				<p><a class="btn btn-default" href="#">Shop SSDs &raquo;</a></p>
+				<p><a class="btn btn-default" href="browseitems.php?page=1&category=ssds">Shop SSDs &raquo;</a></p>
 			</div>
 			<div class="col-md-4">
 				<h2>Video Cards</h2>
 				<p>Want to build the ultimate gaming rig? Start your system with a high-powered graphics card.</p>
-				<p><a class="btn btn-default" href="#">Shop Video Cards &raquo;</a></p>
+				<p><a class="btn btn-default" href="browseitems.php?page=1&category=video_cards">Shop Video Cards &raquo;</a></p>
 			</div>
 			<div class="col-md-4">
 				<h2>Join our community</h2>
