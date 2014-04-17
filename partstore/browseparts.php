@@ -15,11 +15,10 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.php">Home</a></li>
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="partlist.php">Browse all parts</a></li>
+							<li><a href="browseparts.php">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
 							<li><a href="#">Processors</a></li>
@@ -39,10 +38,11 @@
 							<li><a href="#">Printers</a></li>
 						</ul>
 					</li>
+                    <li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="loginregister.php">Login/Register</a></li>
-					<li><a href="#">Cart &nbsp;<span class="badge">4</span></a></li>
+					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
@@ -50,7 +50,7 @@
     
 	<div class="container body-content">
 		<legend>All Products</legend>
-		<table class="table table-bordered" id="productList">
+		<table class="table table-bordered productTable" id="productList">
 				<thead>
 					<tr>
 						<th>Image</th><th>Product Information</th><th>Image</th><th>Product Information</th>
@@ -60,7 +60,7 @@
 					<tr>
 						<td><img src="images/samplegraphicscard.png" class="productImage" /></td>
 						<td>
-							<a href="#">EVGA GeForce GTX Sample Graphics Card</a><br />
+							<a href="product.php">EVGA GeForce GTX Sample Graphics Card</a><br />
 							<dl class="dl-horizontal">
 								<dt>Price:</dt>
 								<dd>$199.99</dd>
@@ -73,7 +73,7 @@
 							</dl>
 						<td><img src="images/samplemonitor.png" class="productImage" /></td>
 						<td>
-							<a href="#">ASUS Sample Monitor</a><br />
+							<a href="product.php">ASUS Sample Monitor</a><br />
 							<dl class="dl-horizontal">
 								<dt>Price:</dt>
 								<dd>$149.99</dd>
@@ -89,7 +89,7 @@
 					<tr>
 						<td><img src="images/samplemonitor.png" class="productImage" /></td>
 						<td>
-							<a href="#">ASUS Sample Monitor</a><br />
+							<a href="product.php">ASUS Sample Monitor</a><br />
 							<dl class="dl-horizontal">
 								<dt>Price:</dt>
 								<dd>$149.99</dd>
@@ -103,7 +103,7 @@
 						</td>
 						<td><img src="images/samplessd.png" class="productImage" /></td>
 						<td>
-							<a href="#">Samsung Sample SSD</a><br />
+							<a href="product.php">Samsung Sample SSD</a><br />
 							<dl class="dl-horizontal">
 								<dt>Price:</dt>
 								<dd>$229.99</dd>

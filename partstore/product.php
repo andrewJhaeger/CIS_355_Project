@@ -1,7 +1,53 @@
 <?php 
-session_start();
-?>
+session_start(); 
 
+require('css/config.inc.php');
+require (MYSQL);
+
+if($_GET['category'] == 'hard_drives' || $_GET['category'] == 'ssds' || $_GET['category'] == 'external_storage')
+{
+	$cat = 'hard_drives_specs';
+} elseif($_GET['category'] <> 'all') {
+	$cat = $_GET['category'] . '_specs';
+} 
+
+$q = "SELECT * FROM " . $cat . " WHERE upc=" . $_GET['upc'];
+$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+
+$itemspecs=mysqli_fetch_array($r);
+
+mysqli_free_result($r);
+mysqli_close($dbc);
+
+function showitem($itemspecs) {
+	echo '<div class="col-md-3">
+			<img src="images/products/'.$itemspecs['upc'].'.jpg" class="featuredProductImage" />
+		  </div>
+		  <div class="col-md-6">
+		    <div class="well">
+		        <span class="titleHeader">'.$itemspecs['product_name'].'</span><br />
+		        <span class="priceHeader">'.number_format($itemspecs['price'], 2).'</span>
+		            <dl class="dl-horizontal productInfo">
+			            <dt>Manufacturer</dt>
+			            <dd>'.$itemspecs['manufacturer'].'</dd>
+			            <dt>Model #:</dt>
+			            <dd>'.$itemspecs['model_number'].'</dd>
+			            <dt>Rating (out of 5):</dt>
+			            <dd>'.$itemspecs['rating'].'</dd>
+			        </dl>';
+		 echo '<form id="addToCart" action="cart.php?upc='.$itemspecs['upc'].'" method="post">
+						<label for="addQuantity">Quantity: </label>
+						<input name = "quantity" type="number" min="0" class="quantityInput" value="1" />';
+}
+
+function showextendedspecs($itemspecs, $cat, $tables) {
+	foreach($tables[$cat] as &$spec) {
+		echo '<tr><td class="specName col-md-2">'.ucwords(str_replace("_", " ", $spec)).
+			 '</td><td>'.$itemspecs[$spec].'</td></tr>';
+	}
+}
+
+?>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -46,15 +92,15 @@ session_start();
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
 					if(isset($_SESSION['firstName'])) { 
-						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
-					}
-					echo '</li><li>';
-					if(isset($_SESSION['firstName'])) {
-						echo '<a href="logout.php">Log Out</a>';
-					} else {
-						echo '<a href="loginregister.php">Login/Register</a>';
-					}
-					echo '</li>';
+					      echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					 }
+					 echo '</li><li>';
+					 if(isset($_SESSION['firstName'])) {
+					     echo '<a href="logout.php">Log Out</a>';
+					 } else {
+					     echo '<a href="loginregister.php">Login/Register</a>';
+					 }
+					 echo '</li>';
 					?>
 					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
@@ -63,34 +109,26 @@ session_start();
     </div>
     
 	<div class="container body-content">
-		<div class="jumbotron">
-			<h1>Computer Parts Store</h1>
-			<p class="lead">Welcome to the Computer Parts Store! This is a simple website written in PHP for our CIS355 project.</p>
-			<p><a href="browseitems.php?page=1&category=all" class="btn btn-primary btn-large">Browse Parts Now&raquo;</a></p>
-		</div>
-
 		<div class="row">
-			<div class="col-md-4">
-				<h2>SSDs</h2>
-				<p>Is your machine in need of a boost? Get a lightning fast solid state drive today!</p>
-				<p><a class="btn btn-default" href="browseitems.php?page=1&category=ssds">Shop SSDs &raquo;</a></p>
-			</div>
-			<div class="col-md-4">
-				<h2>Video Cards</h2>
-				<p>Want to build the ultimate gaming rig? Start your system with a high-powered graphics card.</p>
-				<p><a class="btn btn-default" href="browseitems.php?page=1&category=video_cards">Shop Video Cards &raquo;</a></p>
-			</div>
-			<div class="col-md-4">
-				<h2>Join our community</h2>
-				<p>Register today for the chance to personalize your visit and discuss products.</p>
-				<p><a class="btn btn-default" href="loginregister.php">Register Now! &raquo;</a></p>
+				<?php showitem($itemspecs); ?>
+					
+						<button type="submit" class="btn btn-primary btn-sm">
+							<span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
+		<div class="row">
+			<h4>Product Specifications</h4>
+			<table class="table table-bordered">
+				<?php showextendedspecs($itemspecs, $cat, $tables); ?>
+			</table>
 		<hr />
 		<footer>
 			<p>&copy; 2014 - Computer Parts Store</p>
 		</footer>
-	</div>
+		</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
 </body>

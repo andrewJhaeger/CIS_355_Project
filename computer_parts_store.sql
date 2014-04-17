@@ -1,4 +1,4 @@
-﻿CREATE DATABASE  IF NOT EXISTS `computer_parts_store` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE  IF NOT EXISTS `computer_parts_store` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `computer_parts_store`;
 -- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
 --

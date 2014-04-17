@@ -17,11 +17,19 @@
 	width: 100px;
 }
 
+.featuredProductImage {
+	max-height: 260px;
+}
+
 #productList {
 	margin-bottom: 0px;
 }
 
-#productList dt {
+.productTable dt {
+	text-align: left;
+}
+
+.productInfo dt {
 	text-align: left;
 }
 
@@ -38,4 +46,25 @@
 
 .pagination > .active > a {
 	background-color: #4a6886;
+}
+
+.quantityInput {
+	width: 50px;
+}
+
+.titleHeader {
+	font-size: 30px;
+}
+.priceHeader {
+	font-size: 25px;
+}
+
+.specName {
+	background-color: #f1f1f1;
+}
+
+.userHeader {
+	padding-top: 19.5px;
+	padding-bottom: 19.5px;
+	color: #fff;
 }

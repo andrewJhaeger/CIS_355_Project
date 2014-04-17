@@ -15,7 +15,6 @@
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.php">Home</a></li>
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -39,6 +38,7 @@
 							<li><a href="#">Printers</a></li>
 						</ul>
 					</li>
+                    <li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="loginregister.php">Login/Register</a></li>
@@ -49,7 +49,32 @@
     </div>
     
 	<div class="container body-content">
-
+		<h2>Q&amp;A</h2>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">How do I turn on my computer? (Asked by <strong>Andrew</strong>)</h3>
+			</div>
+			<div class="panel-body">Why won't my computer turn on!!! It's supposed to respond to voice commands!</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Ryan</strong> replied:</h3>
+			</div>
+			<div class="panel-body">Try pressing the power button.</div>
+		</div>
+		<form class="form-horizontal" id="questionReplyForm" target="question.php" method="post">
+			<div class="form-group">
+				<label for="questionReply" class="col-md-2 control-label">Reply to this Question:</label>
+				<div class="col-md-10">
+					<textarea class="form-control" rows="3" id="questionReply" name="questionReply"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-10 col-md-offset-2">
+					<button type="submit" class="btn btn-primary">Reply</button>
+				</div>
+			</div>
+		</form>
 		<hr />
 		<footer>
 			<p>&copy; 2014 - Computer Parts Store</p>
