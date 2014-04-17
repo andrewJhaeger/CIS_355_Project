@@ -93,8 +93,7 @@ function showproducts($page, $specs)
                 <a class="navbar-brand" href="index.php">Computer Parts Store</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="index.php">Home</a></li>
+             	<ul class="nav navbar-nav">
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -118,6 +117,7 @@ function showproducts($page, $specs)
 							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
