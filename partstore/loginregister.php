@@ -206,7 +206,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
-                    <li><a href="questions.php">Q&amp;A</a></li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 

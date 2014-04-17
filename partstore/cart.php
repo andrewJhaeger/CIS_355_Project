@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 <?php
 session_start();
 
@@ -70,9 +73,12 @@ mysqli_free_result($r);
 //mysqli_close($dbc);
 
 ?>
+<<<<<<< HEAD
 =======
 <!DOCTYPE html>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 <html>
 <head>
     <meta charset="utf-8" />
@@ -133,32 +139,48 @@ mysqli_free_result($r);
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="browseparts.php">Browse all parts</a></li>
+							<li><a href="browseitems.php?page=1&category=all">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
-							<li><a href="#">Processors</a></li>
-							<li><a href="#">Motherboards</a></li>
-							<li><a href="#">Memory</a></li>
-							<li><a href="#">Hard Drives</a></li>
-							<li><a href="#">SSDs</a></li>
-							<li><a href="#">Video Cards</a></li>
-							<li><a href="#">Disk Drives</a></li>
-							<li><a href="#">Cases</a></li>
+							<li><a href="browseitems.php?page=1&category=processors">Processors</a></li>
+							<li><a href="browseitems.php?page=1&category=motherboards">Motherboards</a></li>
+							<li><a href="browseitems.php?page=1&category=memory">Memory</a></li>
+							<li><a href="browseitems.php?page=1&category=hard_drives">Hard Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=ssds">SSDs</a></li>
+							<li><a href="browseitems.php?page=1&category=video_cards">Video Cards</a></li>
+							<li><a href="browseitems.php?page=1&category=disk_drives">Disk Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=cases">Cases</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Peripherals</li>
-							<li><a href="#">Monitors</a></li>
-							<li><a href="#">Keyboards</a></li>
-							<li><a href="#">Audio Devices</a></li>
-							<li><a href="#">External Storage</a></li>
-							<li><a href="#">Printers</a></li>
+							<li><a href="browseitems.php?page=1&category=monitors">Monitors</a></li>
+							<li><a href="browseitems.php?page=1&category=keyboards">Keyboards</a></li>
+							<li><a href="browseitems.php?page=1&category=audio_devices">Audio Devices</a></li>
+							<li><a href="browseitems.php?page=1&category=external_storage">External Storage</a></li>
+							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
-                    <li><a href="questions.php">Q&amp;A</a></li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
+<<<<<<< HEAD
 					<li><a href="loginregister.phpl">Login/Register</a></li>
 					<li><a href="cart.php">Cart &nbsp;<span class="badge">-</span></a></li>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+					<?php 
+					 if(isset($_SESSION['firstName'])) { 
+					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					  }
+					  echo '</li><li>';
+					  if(isset($_SESSION['firstName'])) {
+			              echo '<a href="logout.php">Log Out</a>';
+					  } else {
+					      echo '<a href="loginregister.php">Login/Register</a>';
+					  }
+					  echo '</li>';
+					?>
+					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 				</ul>
             </div>
         </div>
@@ -170,6 +192,7 @@ mysqli_free_result($r);
 			<form id="cartForm" action="checkout.php" method="post">
 				<table class="table table-bordered productTable" id="cartTable">
 					<tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th></tr>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <?php
 showcartitems($upcs, $tablenames, $dbc, $carttotal);
@@ -230,15 +253,27 @@ showcartitems($upcs, $tablenames, $dbc, $carttotal);
 						<th colspan="2" style="text-align:right">Total:</th>
 						<th>$579.97</th>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+<?php
+showcartitems($upcs, $tablenames, $dbc, $carttotal);
+?>
+					<tr>
+						<th colspan="2" style="text-align:right">Total:</th>
+						<th><?php echo number_format($carttotal, 2); ?></th>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 						<td></td>
 					</tr>
 				</table>
 				<div style="text-align:right">
 <<<<<<< HEAD
+<<<<<<< HEAD
 					<button type="submit" name="update" formaction="cart.php" class="btn btn-primary">Update Quantities</button> <!--formaction="cart.php"-->
 =======
 					<button type="button" class="btn btn-primary">Update Quantities</button> 
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+					<button type="submit" name="update" formaction="cart.php" class="btn btn-primary">Update Quantities</button> <!--formaction="cart.php"-->
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 					<button type="submit" class="btn btn-success">Checkout</button>
 				</div>
 			</form>

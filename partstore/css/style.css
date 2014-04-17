@@ -35,11 +35,14 @@
 	text-align: left;
 }
 
+<<<<<<< HEAD
 #receiptList dt {
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
 	text-align: left;
 }
 
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 #tablePaginator {
 	text-align: right;
 }
@@ -69,12 +72,18 @@
 .specName {
 	background-color: #f1f1f1;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 }
 
 .userHeader {
 	padding-top: 19.5px;
 	padding-bottom: 19.5px;
 	color: #fff;
+<<<<<<< HEAD
 =======
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 }

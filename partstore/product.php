@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 <?php 
 session_start(); 
 
@@ -49,9 +52,12 @@ function showextendedspecs($itemspecs, $cat, $tables) {
 }
 
 ?>
+<<<<<<< HEAD
 =======
 <!DOCTYPE html>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 <html>
 <head>
     <meta charset="utf-8" />
@@ -111,36 +117,52 @@ function showextendedspecs($itemspecs, $cat, $tables) {
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="browseparts.php">Browse all parts</a></li>
+							<li><a href="browseitems.php?page=1&category=all">Browse all parts</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Internal Components</li>
-							<li><a href="#">Processors</a></li>
-							<li><a href="#">Motherboards</a></li>
-							<li><a href="#">Memory</a></li>
-							<li><a href="#">Hard Drives</a></li>
-							<li><a href="#">SSDs</a></li>
-							<li><a href="#">Video Cards</a></li>
-							<li><a href="#">Disk Drives</a></li>
-							<li><a href="#">Cases</a></li>
+							<li><a href="browseitems.php?page=1&category=processors">Processors</a></li>
+							<li><a href="browseitems.php?page=1&category=motherboards">Motherboards</a></li>
+							<li><a href="browseitems.php?page=1&category=memory">Memory</a></li>
+							<li><a href="browseitems.php?page=1&category=hard_drives">Hard Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=ssds">SSDs</a></li>
+							<li><a href="browseitems.php?page=1&category=video_cards">Video Cards</a></li>
+							<li><a href="browseitems.php?page=1&category=disk_drives">Disk Drives</a></li>
+							<li><a href="browseitems.php?page=1&category=cases">Cases</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Peripherals</li>
-							<li><a href="#">Monitors</a></li>
-							<li><a href="#">Keyboards</a></li>
-							<li><a href="#">Audio Devices</a></li>
-							<li><a href="#">External Storage</a></li>
-							<li><a href="#">Printers</a></li>
+							<li><a href="browseitems.php?page=1&category=monitors">Monitors</a></li>
+							<li><a href="browseitems.php?page=1&category=keyboards">Keyboards</a></li>
+							<li><a href="browseitems.php?page=1&category=audio_devices">Audio Devices</a></li>
+							<li><a href="browseitems.php?page=1&category=external_storage">External Storage</a></li>
+							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
-                    <li><a href="questions.php">Q&amp;A</a></li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
+<<<<<<< HEAD
 					<li><a href="loginregister.php">Login/Register</a></li>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+					<?php 
+					if(isset($_SESSION['firstName'])) { 
+					      echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					 }
+					 echo '</li><li>';
+					 if(isset($_SESSION['firstName'])) {
+					     echo '<a href="logout.php">Log Out</a>';
+					 } else {
+					     echo '<a href="loginregister.php">Login/Register</a>';
+					 }
+					 echo '</li>';
+					?>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
     </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
     
 	<div class="container body-content">
@@ -169,6 +191,13 @@ function showextendedspecs($itemspecs, $cat, $tables) {
 						<label for="addQuantity">Quantity: </label>
 						<input type="number" min="0" class="quantityInput" value="1"/>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+    
+	<div class="container body-content">
+		<div class="row">
+				<?php showitem($itemspecs); ?>
+					
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 						<button type="submit" class="btn btn-primary btn-sm">
 							<span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
 						</button>
@@ -180,21 +209,29 @@ function showextendedspecs($itemspecs, $cat, $tables) {
 			<h4>Product Specifications</h4>
 			<table class="table table-bordered">
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<?php showextendedspecs($itemspecs, $cat, $tables); ?>
 =======
 				<tr><td class="specName col-md-2">Cores</td><td>4</td></tr>
 				<tr><td class="specName col-md-2">Clock Speed</td><td>3.5GHz</td></tr>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+				<?php showextendedspecs($itemspecs, $cat, $tables); ?>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 			</table>
 		<hr />
 		<footer>
 			<p>&copy; 2014 - Computer Parts Store</p>
 		</footer>
 <<<<<<< HEAD
+<<<<<<< HEAD
 		</div>
 =======
 	</div>
 >>>>>>> f3b3f5232698ebe9bd3c7f5a6afea7703bdaf964
+=======
+		</div>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
 </body>

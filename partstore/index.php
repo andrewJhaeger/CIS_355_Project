@@ -41,7 +41,7 @@ session_start();
 							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
-                    <li><a href="questions.php">Q&amp;A</a></li>
+					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
@@ -73,17 +73,26 @@ session_start();
 			<div class="col-md-4">
 				<h2>SSDs</h2>
 				<p>Is your machine in need of a boost? Get a lightning fast solid state drive today!</p>
+<<<<<<< HEAD
 				<p><a class="btn btn-default" href="browseitems.php?page=1&category=ssds">Shop SSDs &raquo;</a></p>
 			</div>
 			<div class="col-md-4">
 				<h2>Video Cards</h2>
 				<p>Want to build the ultimate gaming rig? Start your system with a high-powered graphics card.</p>
 				<p><a class="btn btn-default" href="browseitems.php?page=1&category=video_cards">Shop Video Cards &raquo;</a></p>
+=======
+				<p><a class="btn btn-primary" href="browseitems.php?page=1&category=ssds">Shop SSDs &raquo;</a></p>
+			</div>
+			<div class="col-md-4">
+				<h2>Ask a question</h2>
+				<p>Have a question about a product? Need help installing a graphics card? Need a recommendation? Visit our Q&amp;A section!</p>
+				<p><a class="btn btn-primary" href="questions.php">Q&amp;A  &raquo;</a></p>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
 			</div>
 			<div class="col-md-4">
 				<h2>Join our community</h2>
 				<p>Register today for the chance to personalize your visit and discuss products.</p>
-				<p><a class="btn btn-default" href="loginregister.php">Register Now! &raquo;</a></p>
+				<p><a class="btn btn-primary" href="loginregister.php">Register Now! &raquo;</a></p>
 			</div>
 		</div>
 		<hr />

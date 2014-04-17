@@ -94,7 +94,10 @@ function showproducts($page, $specs)
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
+<<<<<<< HEAD
                     <li><a href="index.php">Home</a></li>
+=======
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -118,6 +121,10 @@ function showproducts($page, $specs)
 							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
+<<<<<<< HEAD
+=======
+					<li><a href="questions.php">Q&amp;A</a></li>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
@@ -201,4 +208,8 @@ function showproducts($page, $specs)
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 4aae1451284468507b4d2c2b950acf0e3616f982
