@@ -18,7 +18,6 @@ session_start();
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.php">Home</a></li>
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Parts <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -42,6 +41,7 @@ session_start();
 							<li><a href="browseitems.php?page=1&category=printers">Printers</a></li>
 						</ul>
 					</li>
+                    <li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
