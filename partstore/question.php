@@ -71,6 +71,7 @@
 			</div>
 			<div class="form-group">
 				<div class="col-md-10 col-md-offset-2">
+					<button type="button" class="btn btn-info">Attach a File</button>
 					<button type="submit" class="btn btn-primary">Reply</button>
 				</div>
 			</div>
