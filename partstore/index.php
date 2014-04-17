@@ -78,7 +78,7 @@ session_start();
 			<div class="col-md-4">
 				<h2>Ask a question</h2>
 				<p>Have a question about a product? Need help installing a graphics card? Need a recommendation? Visit our Q&amp;A section!</p>
-				<p><a class="btn btn-primary" href="browseitems.php?page=1&category=video_cards">Q&amp;A  &raquo;</a></p>
+				<p><a class="btn btn-primary" href="questions.php">Q&amp;A  &raquo;</a></p>
 			</div>
 			<div class="col-md-4">
 				<h2>Join our community</h2>
