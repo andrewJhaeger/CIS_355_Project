@@ -1,4 +1,74 @@
-<!DOCTYPE html>
+<?php 
+session_start(); 
+
+require('css/config.inc.php');
+require (MYSQL);
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if(!empty($_SESSION['firstName'])) {
+		$errors = array();
+
+		if (!empty($_POST['newQuestion'])) {
+			$question_title = mysqli_real_escape_string ($dbc, $_POST['newQuestion']);
+		} else {
+			$question_title = FALSE;
+			$errors[] = '<p class="error"> - You forget to enter a question!</p>';
+		}
+
+		if (!empty($_POST['newQuestionDetails'])) {
+			$question = mysqli_real_escape_string ($dbc, $_POST['newQuestionDetails']);
+		} else {
+			$question = FALSE;
+			$errors[] = '<p class="error"> - You forget to enter details about your question!</p>';
+		}
+
+		if ($question_title && $question) {
+			$firstName = $_SESSION['firstName'];
+			$q = "INSERT INTO questions (question_title, question, asked_by, replies) VALUES ('$question_title', '$question', '$firstName', '0')";
+	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+
+	        if (mysqli_affected_rows($dbc) != 1) {
+	        	echo '<div class="container body-content"><div class="col-md-12"><div class="well">';
+				echo '<p class="error">You could not add a new question due to a system error.
+					  We apologize for any inconvenience.</p>';
+				echo '</div></div></div>';
+	        	
+	        }
+		} else {
+			echo '<div class="container body-content"><div class="col-md-12"><div class="well">
+			<p class="error">The following error(s) occurred:<br />';
+			foreach ($errors as $msg) { // Print each error.
+				echo "$msg";
+			}
+			echo '</div></div></div>';
+		}
+	} else {
+		echo '<div class="container body-content"><div class="col-md-12"><div class="well">';
+		echo '<p class="error">You could not add a new question because you are not logged in.  
+			 Please log in, then try again.</p>';
+		echo '</div></div></div>';
+	}
+}
+
+$q = "SELECT * FROM questions";
+$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+
+while($row = mysqli_fetch_array($r)) 
+{  	$questions[] = $row;  }
+
+mysqli_free_result($r);
+mysqli_close($dbc);
+
+function displayQuestions($questions) {
+	foreach ($questions as &$question) {
+		echo '<tr><td><a href="question.php?question=' 
+			 . $question['id'] . '">' . $question['question_title'] 
+			 . '</a></td><td>' . $question['asked_by'] 
+			 . '</td><td>' . $question['replies'] . '</td></tr>';
+	}
+}
+
+?>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -41,7 +111,18 @@
 					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="loginregister.php">Login/Register</a></li>
+					<?php 
+					if(isset($_SESSION['firstName'])) { 
+						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					}
+					echo '</li><li>';
+					if(isset($_SESSION['firstName'])) {
+						echo '<a href="logout.php">Log Out</a>';
+					} else {
+						echo '<a href="loginregister.php">Login/Register</a>';
+					}
+					echo '</li>';
+					?>
 					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
@@ -53,33 +134,30 @@
 		<div class="row">
 			<table class="table table-bordered">
 				<tr><th>Question</th><th>Asked By</th><th>Replies</th></tr>
-				<tr><td><a href="question.php">How do I turn on my computer?</a></td><td>Andrew</td><td>1</td></tr>
-				<tr><td><a href="question.php">Core i5 vs i7</a></td><td>Ryan</td><td>12</td></tr>
-				<tr><td><a href="question.php">How do I output from my laptop to my TV?</a></td><td>Steve</td><td>4</td></tr>
-				<tr><td><a href="question.php">I need help adding items to my cart.</a></td><td>John</td><td>1</td></tr>
-				<tr><td><a href="question.php">How do I install a graphics card?</td><td>Jane</td><td>4</td></tr>
+				<?php displayQuestions($questions); ?>
 			</table>
 		</div>
 		<div class="row">
 			<div class="well">
-				<form class="form-horizontal" id="newQuestionForm" action="question.php" method="post">
+				<form class="form-horizontal" id="newQuestionForm" action="questions.php" method="post"  enctype="multipart/form-data">
 					<legend>New Question</legend>
 					<div class="form-group">
 						<label for="newQuestion" class="col-md-3 control-label">Question:</label>
 						<div class="col-md-9">
-							<input type="text" class="form-control" id="newQuestion" name="newQuestion" placeholder="Question"/>
+							<input type="text" class="form-control" id="newQuestion" name="newQuestion" placeholder="Question" maxlength="300"/>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="newQuestionDetails" class="col-md-3 control-label">Additional Details:</label>
 						<div class="col-md-9">
-							<textarea class="form-control" rows="3" id="newQuestionDetails" name="newQuestionDetails"></textarea>
+							<textarea class="form-control" rows="3" id="newQuestionDetails" name="newQuestionDetails" maxlength="2000"></textarea>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-9 col-md-offset-3">
-							<button type="button" class="btn btn-info">Attach a File</button>
-							<button type="submit" class="btn btn-primary">Submit</button>
+							Attach a File: <input type="file" class="form-control" name="file" size="10" style="padding: 0px 0px; maring-bottom: 10px; width: 70%; display: inline-block;" />
+							<!--<button type="button" class="btn btn-info">Attach a File</button>-->
+							<button type="submit" class="btn btn-primary"style="display: inline-block;">Submit</button>
 						</div>
 					</div>
 				</form>

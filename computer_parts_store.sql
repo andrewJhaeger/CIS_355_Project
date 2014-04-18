@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 17, 2014 at 07:07 PM
+-- Generation Time: Apr 18, 2014 at 01:36 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.12
 
@@ -29,11 +29,20 @@ USE `computer_parts_store`;
 --
 
 CREATE TABLE IF NOT EXISTS `answers` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int(10) unsigned NOT NULL,
-  `answer_numner` int(10) unsigned NOT NULL,
-  `answer` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`question_id`,`answer_numner`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `answer` varchar(2000) DEFAULT NULL,
+  `answered_by` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`,`question_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `answers`
+--
+
+INSERT INTO `answers` (`id`, `question_id`, `answer`, `answered_by`) VALUES
+(1, 1, 'Try pressing the power button.', 'Ryan'),
+(3, 1, 'THANKS RYAN!!!  I never thought of doing that!', 'Andrew');
 
 -- --------------------------------------------------------
 
@@ -123,17 +132,14 @@ INSERT INTO `cases_specs` (`id`, `upc`, `model_number`, `product_name`, `manufac
 --
 
 CREATE TABLE IF NOT EXISTS `current_orders` (
-  `order_id` int(10) unsigned NOT NULL,
+  `order_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `upc` int(10) unsigned NOT NULL,
-  `email` varchar(50) NOT NULL,
+  `price` float NOT NULL,
   `quantity` int(11) DEFAULT NULL,
-  `subtotal` float DEFAULT NULL,
-  `tax` float DEFAULT NULL,
-  `shipping` float DEFAULT NULL,
-  `total` float DEFAULT NULL,
-  PRIMARY KEY (`order_id`,`upc`,`email`),
-  KEY `email_idx` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`order_id`,`upc`,`user_id`),
+  KEY `email_idx` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -413,9 +419,10 @@ INSERT INTO `motherboards_specs` (`id`, `upc`, `model_number`, `product_name`, `
 CREATE TABLE IF NOT EXISTS `payment_information` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
-  `card_type` varchar(10) DEFAULT NULL,
-  `card_number` int(16) DEFAULT NULL,
+  `card_number` varchar(16) DEFAULT NULL,
   `name_on_card` varchar(100) DEFAULT NULL,
+  `expiration_month` varchar(15) NOT NULL,
+  `expiration_year` char(4) NOT NULL,
   `security_code` char(3) DEFAULT NULL,
   PRIMARY KEY (`id`,`email`),
   UNIQUE KEY `id_UNIQUE` (`id`),
@@ -522,22 +529,22 @@ CREATE TABLE IF NOT EXISTS `product_reviews` (
 
 CREATE TABLE IF NOT EXISTS `questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(500) DEFAULT NULL,
+  `question_title` varchar(300) NOT NULL,
+  `question` varchar(2000) DEFAULT NULL,
+  `asked_by` varchar(30) NOT NULL,
+  `replies` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Table structure for table `questions_answers`
+-- Dumping data for table `questions`
 --
 
-CREATE TABLE IF NOT EXISTS `questions_answers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+INSERT INTO `questions` (`id`, `question_title`, `question`, `asked_by`, `replies`) VALUES
+(1, 'How do I turn on my computer?', 'Why won''t my computer turn on!!! It''s supposed to respond to voice commands!', 'Andrew', 2),
+(2, 'Core i5 vs i7', 'Which is better and why?', 'Ryan', 0),
+(3, 'Testing a new question?', 'Adding a new question to the database through php code.', 'Andrew', 0);
 
 -- --------------------------------------------------------
 
@@ -589,7 +596,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`,`email`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`, `firstName`, `middleInitial`, `lastName`, `homePhone`, `cellPhone`, `active`, `billStreetAddress`, `billCity`, `billState`, `billZipcode`, `shipStreetAddress`, `shipCity`, `shipState`, `shipZipcode`) VALUES
+(8, 'student@svsu.edu', '6367c48dd193d56ea7b0baad25b19455e529f5ee', 'Andrew', 'J', 'Haeger', '9896627524', '9894158421', NULL, '420 Virginia Street', 'Auburn', 'MI', '48611', '420 Virginia Street', 'Auburn', 'MI', '48611');
 
 -- --------------------------------------------------------
 
