@@ -1,4 +1,41 @@
-<!DOCTYPE html>
+<?php
+session_start();
+
+require('css/config.inc.php');
+require (MYSQL);
+
+$infoexists = false;
+$q = "SELECT * FROM payment_information WHERE email='".$_SESSION['email']."'";
+$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+
+if(mysqli_num_rows($r) > 0) {
+	$paymentinfo = mysqli_fetch_array($r);
+	$infoexists = true;
+}
+
+$selectedmonth = array();
+
+function monthdropdown() {
+	$months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December");
+
+	for($i=0; $i<12; $i++) {
+		$selected = "";
+		if($months[$i] == $paymentinfo['expiration_month']) { $selected = "selected"; } 
+
+		echo '<option value="'.$months[$i].'" '.$selected.'>'.$months[$i].'</option>';
+	}
+}
+
+function yeardropdown() {
+	for($i=2014; $i<2023; $i++) {
+		$selected = "";
+		if($i == $paymentinfo['expiration_year']) { $selected = "selected"; }
+
+		echo '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+	}
+}
+
+?>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -41,8 +78,23 @@
 					<li><a href="questions.php">Q&amp;A</a></li>
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="loginregister.php">Login/Register</a></li>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
+					<?php 
+					if(isset($_SESSION['firstName'])) { 
+					      echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					 }
+					 echo '</li><li>';
+					 if(isset($_SESSION['firstName'])) {
+					     echo '<a href="logout.php">Log Out</a>';
+					 } else {
+					     echo '<a href="loginregister.php">Login/Register</a>';
+					 }
+					 echo '</li>';
+					
+					if(isset($_SESSION['firstName'])) {
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
+					}
+				
+					?>
 				</ul>
             </div>
         </div>
@@ -53,36 +105,40 @@
 		<div class="row">
 			<div class="col-md-8">
 				<div class="well">
-					<form class="form-horizontal" id="checkoutForm" target="submitCheckout.php" method="post" novalidate>
+					<form class="form-horizontal" id="checkoutForm" action="commitorder.php" method="post" novalidate>
 						<fieldset>
 							<legend>Payment Information</legend>
 							<div class="form-group">
 								<label for="cardholderName" class="col-md-3 control-label">Cardholder Name:</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" id="cardholderName" name="cardholderName" placeholder="Cardholder Name" />
+									<input type="text" class="form-control" id="cardholderName" name="cardholderName" 
+									<?php if($infoexists) { echo ' value="'.$paymentinfo['name_on_card'].'"'; } ?> placeholder="Cardholder Name" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">Credit Card Number:</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Card Number" />
+									<input type="text" class="form-control" id="cardNumber" name="cardNumber" 
+									<?php if($infoexists) { echo ' value="'.$paymentinfo['card_number'].'"'; } ?> placeholder="Card Number" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">Expiration Date:</label>
 								<div class="col-md-3">
 									<select class="form-control" id="expirationMonth" name="expirationDate">
-										<option value=""></option><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option>
+										<?php monthdropdown(); ?>
 									</select>
 								</div>
 								<div class="col-md-2">
 									<select class="form-control" id="expirationYear" name="expirationYear">
-										<option value=""></option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option>
+										<?php yeardropdown(); ?>
 									</select>
 								</div>
 								<label class="col-md-1 control-label">CVV2:</label>
 								<div class="col-md-2">
-									<input type="number" min="0" max="999" class="form-control" id="securityCode" name="securityCode" data-toggle="tooltip" data-placement="bottom" title="Your credit card's 3 digit security code" />
+									<input type="number" min="0" max="999" class="form-control" id="securityCode" name="securityCode" 
+									<?php if($infoexists) { echo ' value="'.$paymentinfo['security_code'].'"'; } ?> data-toggle="tooltip" 
+									data-placement="bottom" title="Your credit card's 3 digit security code" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -99,13 +155,13 @@
 					<legend>Receipt</legend>
 					<dl class="dl-horizontal" id="receiptList">
 						<dt>Number of Items:</dt>
-						<dd>3</dd>
+						<dd><?php echo $_POST['totalquantity']; ?></dd>
 						<dt>Subtotal:</dt>
-						<dd>$579.97</dd>
+						<dd><?php echo number_format($_POST['subtotal'], 2); ?></dd>
 						<dt>Sales Tax (6%):</dt>
-						<dd>$34.80</dd>
+						<dd><?php $salestax = ($_POST['subtotal']*0.06); echo number_format($salestax, 2); ?></dd>
 						<dt>Total:</dt>
-						<dd><strong>$614.77</strong></dd>
+						<dd><strong><?php $total = ($_POST['subtotal'] + ($_POST['subtotal']*0.06)); echo number_format($total, 2); ?></strong></dd>
 					</dl>
 				</div>
 			</div>

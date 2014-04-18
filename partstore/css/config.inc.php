@@ -3,7 +3,7 @@
 define('LIVE', FALSE);
 define('EMAIL', 'sjfoco@svsu.edu');
 
-define('BASE_URL', 'http://localhost/cis_355_project-master/partstore/');
+define('BASE_URL', 'http://localhost/417/cis_355_project-master/partstore/');
 define('MYSQL', 'mysqli_connect.php');
 
 date_default_timezone_set('US/Eastern');
@@ -85,7 +85,7 @@ $tablenames[] = 'processors_specs';
 $tablenames[] = 'video_cards_specs';
 
 function my_error_handler ($e_number, $e_message, $e_file, $e_line, $e_vars) {
-	$message = "An error has occurred in script '$e_file' on line $e_line: $e_message\n";
+	$message = "\n\n\nAn error has occurred in script '$e_file' on line $e_line: $e_message\n";
 	$message .= "Date/Time: " . date('n-j-Y H:i:s') . "\n";
 
 	if (!LIVE) {

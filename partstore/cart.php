@@ -4,26 +4,50 @@ session_start();
 require('css/config.inc.php');
 require (MYSQL);
 
+$alreadyexists = false;
+$totalquantity = 0;
+
 if(isset($_GET['upc'])) {
-	$q = "INSERT INTO shopping_cart (email, upc, quantity) VALUES ('".$_SESSION['email']."',".$_GET['upc'].",".$_POST['quantity'].")";
+	$q = "SELECT upc, quantity FROM shopping_cart WHERE email='".$_SESSION['email']."'";
 	$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+
+	$upcs = array();
+
+	while($row = mysqli_fetch_array($r)) 
+	{  	$upcs[] = $row;  }
+
+	for($i=0; $i<(sizeof($upcs)); $i++) {
+		if($_GET['upc'] == $upcs[$i][0]) {
+			$alreadyexists = true;
+			break;
+		}
+	}
+
+	if($alreadyexists == false) {
+		$q = "INSERT INTO shopping_cart (email, upc, quantity) VALUES ('".$_SESSION['email']."',".$_GET['upc'].",".$_POST['quantity'].")";
+		$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+	}
 }
 
 $q = "SELECT upc, quantity FROM shopping_cart WHERE email='".$_SESSION['email']."'";
 $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
-
-//$c = @mysqli_num_rows($r);
+$_SESSION['shopping_cart_count'] = mysqli_num_rows($r);
 
 $upcs = array();
-//$upcs = mysqli_fetch_array($r);
-	while($row = mysqli_fetch_array($r)) 
+
+while($row = mysqli_fetch_array($r)) 
 	{  	$upcs[] = $row;  }
 
 if(isset($_POST['update'])) {
 	for($i=0; $i<(sizeof($upcs)); $i++) {
 		if($_POST[$i] <> $upcs[$i][1]) {
-			$q = "UPDATE shopping_cart SET quantity=".$_POST[$i]." WHERE upc=".$upcs[$i][0];
-			$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+			if($_POST[$i] == 0) {
+				$q = "DELETE FROM shopping_cart WHERE upc=".$upcs[$i][0];
+				$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+			} else {
+				$q = "UPDATE shopping_cart SET quantity=".$_POST[$i]." WHERE upc=".$upcs[$i][0];
+				$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+			}
 		}
 	}	
 
@@ -36,8 +60,11 @@ if(isset($_POST['update'])) {
 	{  	$upcs[] = $row;  }
 }
 
-function showcartitems($upcs, $tablenames, $dbc, &$carttotal) {
+function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 	$carttotal = 0;
+	$totalquantity = 0;
+	$allitemsarray = array();
+
 	for($i=0; $i<(sizeof($upcs)); $i++) { // as &$value) {   (count($upcs)-1)
 		foreach($tablenames as &$table) {
 			$q = 'SELECT upc, manufacturer, model_number, product_name, price, rating FROM '.$table.' WHERE upc = '.$upcs[$i][0];
@@ -62,10 +89,14 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal) {
 						<td><input type="number" class="quantityInput" name="'.$i.'" value="'.$upcs[$i][1].'" /></td>
 					</tr>';
 	$carttotal += ($curritem['price'] * $upcs[$i][1]);
+	$totalquantity += $upcs[$i][1];
+
+		$allitemsarray[] = $curritem;
 	}
+	$_SESSION['allitems'] = $allitemsarray;
 }
 //trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
-mysqli_free_result($r);
+//mysqli_free_result($r);
 //mysqli_close($dbc);
 
 ?>
@@ -121,8 +152,12 @@ mysqli_free_result($r);
 					      echo '<a href="loginregister.php">Login/Register</a>';
 					  }
 					  echo '</li>';
+					
+					if(isset($_SESSION['firstName'])) {
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
+					}
+				
 					?>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
@@ -135,7 +170,10 @@ mysqli_free_result($r);
 				<table class="table table-bordered productTable" id="cartTable">
 					<tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th></tr>
 <?php
-showcartitems($upcs, $tablenames, $dbc, $carttotal);
+showcartitems($upcs, $tablenames, $dbc, $carttotal, $totalquantity);
+echo '<input type="hidden" name="subtotal" value="'.$carttotal.'" />';
+echo '<input type="hidden" name="totalquantity" value="'.$totalquantity.'" />';
+
 ?>
 					<tr>
 						<th colspan="2" style="text-align:right">Total:</th>

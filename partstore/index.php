@@ -55,8 +55,12 @@ session_start();
 						echo '<a href="loginregister.php">Login/Register</a>';
 					}
 					echo '</li>';
+					
+					if(isset($_SESSION['firstName'])) {
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
+					}
+				
 					?>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>

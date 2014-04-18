@@ -5,6 +5,8 @@ require('css/config.inc.php');
 $page_title = 'Register';
 //include ('includes/header.html');
 
+$submit = false;
+
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if(isset($_POST['loginSubmit']))
 	{
@@ -37,9 +39,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 				// Register the values:
 				$_SESSION = mysqli_fetch_array ($r, MYSQLI_ASSOC); 
+				
+				$cq = "SELECT * FROM shopping_cart WHERE email='".$_SESSION['email']."'";
+				$cr = mysqli_query ($dbc, $cq) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+				$_SESSION["shopping_cart_count"] = mysqli_num_rows($cr);	
+
 				mysqli_free_result($r);
-				mysqli_close($dbc);
-								
+				mysqli_free_result($cr);
+				mysqli_close($dbc);			
 				// Redirect the user:
 				$url = BASE_URL . 'index.php'; // Define the URL.
 
@@ -133,14 +140,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 					 mysqli_error($dbc));
 	    
 			    if (mysqli_affected_rows($dbc) == 1) {
+			    	$submit = true;
+
 					$body = "Thank you for registering. To activate your account, please click on this link:\n\n";
 					$body .= BASE_URL . 'activate.php?em=' . urlencode($email) . "&ac=$a";
 					mail($trimmed['registerEmail'], 'Registration Confirmation', $body, 'From: admin@sitename.com');
 
-					echo '<p class="error">Thank you for registering! A confirmation email has been sent to you.
-						  Please click on the link in that email to activate your account.</p>';
+					//echo '<p class="error">Thank you for registering! A confirmation email has been sent to you.
+						  //Please click on the link in that email to activate your account.</p>';
+					ob_start();
+					header("Refresh:3; url=index.php");
 					//include ('includes/footer.html')
-					exit();
+					
+					//sleep(5);
+					
+					//exit();
 
 				} else {
 					echo '<p class="error">You could not be registered due to a system error.
@@ -219,14 +233,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 						echo '<a href="loginregister.php">Login/Register</a>';
 					}
 					echo '</li>';
+					
+					if(isset($_SESSION['firstName'])) {
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
+					}
+				
 					?>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
     </div>
     
 	<div class="container body-content">
+		<?php if($submit==true) { echo '<h3 align="center">We have sent you an email. Please click the activiation link 
+										in the email to activate your account.</h3>'; } ?>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="well">

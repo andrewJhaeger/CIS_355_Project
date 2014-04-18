@@ -100,18 +100,24 @@ function showextendedspecs($itemspecs, $cat, $tables) {
 					     echo '<a href="loginregister.php">Login/Register</a>';
 					 }
 					 echo '</li>';
+					
+					if(isset($_SESSION['firstName'])) {
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
+					}
+				
 					?>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
     </div>
     
 	<div class="container body-content">
+		<?php if(isset($_GET['li'])) { echo '<h3 align="center">Error! Please register and log in before adding items to your cart.</h3>'; } ?>
 		<div class="row">
-				<?php showitem($itemspecs); ?>
-					
-						<button type="submit" class="btn btn-primary btn-sm">
+				<?php showitem($itemspecs);
+						echo '<button type="submit" '; if(!isset($_SESSION['firstName'])) { 
+							echo 'formaction="product.php?category='.$_GET['category'].'&upc='.$_GET['upc'].'&li=false" '; }
+							echo 'class="btn btn-primary btn-sm">'; ?>
 							<span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
 						</button>
 					</form>

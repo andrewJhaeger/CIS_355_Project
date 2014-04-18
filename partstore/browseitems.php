@@ -9,26 +9,28 @@ if($_GET['category']=='all') {
 }
 
 require (MYSQL);
-
-$columns = 'id, upc, manufacturer, model_number, product_name, price, rating';
+$t="";
+//$columns = "id, upc, manufacturer, model_number, product_name, price, rating, $t as tablename";
 
 if($_GET['category'] == 'hard_drives' || $_GET['category'] == 'ssds' || $_GET['category'] == 'external_storage')
 {
-	$cat = 'hard_drives_specs WHERE type="' . $_GET['category'].'"';
+	$t = 'hard_drives_specs WHERE type="' . $_GET['category'].'"';
 } elseif($_GET['category'] <> 'all') {
-	$cat = $_GET['category'] . '_specs';
+	$t = $_GET['category'] . '_specs';
 } 
 
 if($_GET['category'] == 'all') {
 	$count = 0;
 	$q = "";
 	foreach($tablenames as &$t) {
+		$columns = "id, upc, manufacturer, model_number, product_name, price, rating, '$t' as tablename";
 		$count++;
 		$q .= "SELECT ".$columns." FROM " . $t . " ";
 		if($count <> count($tablenames)) { $q .= "UNION ALL "; }
 	}
 } else {
-	$q = "SELECT ".$columns." FROM " . $cat;	
+	$columns = "id, upc, manufacturer, model_number, product_name, price, rating";
+	$q = "SELECT ".$columns." FROM " . $t;	
 }
 
 if(isset($_POST['order'])) {
@@ -58,9 +60,13 @@ function showproducts($page, $specs)
 		echo '<tr>';
 		for($j=0; $j<=1; $j++) {
 			if(isset($specs[$i+$j]['id'])) {
-				echo '<td><img src="images/products/'.$specs[$i+$j]['upc'].'.jpg" class="productImage" /></td>
-					  <td><a href="product.php?category='.$_GET['category'].'&upc='.$specs[$i+$j]['upc'].'">'.$specs[$i+$j]['product_name'].'</a><br />
-					       <dl class="dl-horizontal">
+				echo '<td><img src="images/products/'.$specs[$i+$j]['upc'].'.jpg" class="productImage" /></td>';
+				if($_GET['category']=='all') {
+					echo '<td><a href="product.php?category='.str_replace("_specs", "", $specs[$i+$j]['tablename']).'&upc='.$specs[$i+$j]['upc'].'">'.$specs[$i+$j]['product_name'].'</a><br />';
+				} else {
+					echo '<td><a href="product.php?category='.$_GET['category'].'&upc='.$specs[$i+$j]['upc'].'">'.$specs[$i+$j]['product_name'].'</a><br />';
+				}
+					  echo '<dl class="dl-horizontal">
 							    <dt>Price:</dt>
 								<dd>'.number_format($specs[$i+$j]['price'], 2).'</dd>
 								<dt>Manufacturer:</dt>
@@ -131,8 +137,12 @@ function showproducts($page, $specs)
 					      echo '<a href="loginregister.php">Login/Register</a>';
 					  }
 					  echo '</li>';
+					
+					if(isset($_SESSION['firstName'])) {
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
+					}
+				
 					?>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
