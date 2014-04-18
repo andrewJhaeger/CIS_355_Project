@@ -65,35 +65,67 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 	$totalquantity = 0;
 	$allitemsarray = array();
 
-	for($i=0; $i<(sizeof($upcs)); $i++) { // as &$value) {   (count($upcs)-1)
-		foreach($tablenames as &$table) {
-			$q = 'SELECT upc, manufacturer, model_number, product_name, price, rating FROM '.$table.' WHERE upc = '.$upcs[$i][0];
-			$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
-			if(@mysqli_num_rows($r) == 1) {
-				break 1;	
-			}
-		}
-		$curritem = mysqli_fetch_array($r);
-	echo '<tr>';
-	echo '<td><img src="images/products/'.$curritem['upc'].'.jpg" class="productImage" /></td>';
-	echo '<td>';
-	echo '<a href="product.php?category='.str_replace("_specs", "", $table).'&upc='.$curritem['upc'].'">'.$curritem['product_name'].'</a><br />';
-	echo '<dl class="dl-horizontal"><dt>Manufacturer</dt>
-									<dd>'.$curritem['manufacturer'].'</dd>
-									<dt>Model #:</dt>
-									<dd>'.$curritem['model_number'].'</dd>
-									<dt>Rating (out of 5):</dt>
-									<dd>'.$curritem['rating'].'</dd>
-								</dl></td>
-						<td class="cartPrice">'.number_format($curritem['price'], 2).'</td>
-						<td><input type="number" class="quantityInput" name="'.$i.'" value="'.$upcs[$i][1].'" /></td>
-					</tr>';
-	$carttotal += ($curritem['price'] * $upcs[$i][1]);
-	$totalquantity += $upcs[$i][1];
+	//if(count($upcs == 0)) { 
+	//	echo '<h3 align="center">Your cart is empty! Please browse our selection of items!</h3>'; 
+	//} else {
 
-		$allitemsarray[] = $curritem;
-	}
-	$_SESSION['allitems'] = $allitemsarray;
+		for($i=0; $i<(sizeof($upcs)); $i++) { // as &$value) {   (count($upcs)-1)
+			foreach($tablenames as &$table) {
+				$q = 'SELECT upc, manufacturer, model_number, product_name, price, rating FROM '.$table.' WHERE upc = '.$upcs[$i][0];
+				$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+				
+				if(@mysqli_num_rows($r) == 1) {
+					break 1;	
+				}
+			}
+			
+			$curritem = mysqli_fetch_array($r);
+			echo '<legend>Shopping Cart</legend>
+					<div class="row">
+						<form id="cartForm" action="checkout.php" method="post">
+							<table class="table table-bordered productTable" id="cartTable">
+								<tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th></tr>
+								<tr>
+									<td><img src="images/products/'.$curritem['upc'].'.jpg" class="productImage" /></td>
+									<td>
+										<a href="product.php?category='.str_replace("_specs", "", $table).
+										'&upc='.$curritem['upc'].'">'.$curritem['product_name'].'</a><br />
+										<dl class="dl-horizontal"><dt>Manufacturer</dt>
+											<dd>'.$curritem['manufacturer'].'</dd>
+											<dt>Model #:</dt>
+											<dd>'.$curritem['model_number'].'</dd>
+											<dt>Rating (out of 5):</dt>
+											<dd>'.$curritem['rating'].'</dd>
+										</dl>
+									</td>
+									<td class="cartPrice">'.number_format($curritem['price'], 2).'</td>
+									<td><input type="number" class="quantityInput" name="'.$i.'" value="'.$upcs[$i][1].'" /></td>
+								</tr>';
+				
+								$carttotal += ($curritem['price'] * $upcs[$i][1]);
+								$totalquantity += $upcs[$i][1];
+
+						echo '<input type="hidden" name="subtotal" value="'.$carttotal.'" />
+							  <input type="hidden" name="totalquantity" value="'.$totalquantity.'" />';
+
+						$curritem['quantity'] = $upcs[$i][1];
+						$allitemsarray[] = $curritem;
+			}
+		
+		$_SESSION['allitems'] = $allitemsarray;
+
+							echo '<tr>
+									<th colspan="2" style="text-align:right">Total:</th>
+									<th>'.number_format($carttotal, 2).'</th>
+									<td></td>
+								</tr>
+							</table>
+						<div style="text-align:right">
+							<button type="submit" name="update" formaction="cart.php" class="btn btn-primary">Update Quantities</button> <!--formaction="cart.php"-->
+							<button type="submit" class="btn btn-success">Checkout</button>
+						</div>
+						</form>';
+//}
 }
 //trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 //mysqli_free_result($r);
@@ -164,28 +196,13 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
     </div>
     
 	<div class="container body-content">
-		<legend>Shopping Cart</legend>
-		<div class="row">
-			<form id="cartForm" action="checkout.php" method="post">
-				<table class="table table-bordered productTable" id="cartTable">
-					<tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th></tr>
+		
 <?php
 showcartitems($upcs, $tablenames, $dbc, $carttotal, $totalquantity);
-echo '<input type="hidden" name="subtotal" value="'.$carttotal.'" />';
-echo '<input type="hidden" name="totalquantity" value="'.$totalquantity.'" />';
+
 
 ?>
-					<tr>
-						<th colspan="2" style="text-align:right">Total:</th>
-						<th><?php echo number_format($carttotal, 2); ?></th>
-						<td></td>
-					</tr>
-				</table>
-				<div style="text-align:right">
-					<button type="submit" name="update" formaction="cart.php" class="btn btn-primary">Update Quantities</button> <!--formaction="cart.php"-->
-					<button type="submit" class="btn btn-success">Checkout</button>
-				</div>
-			</form>
+					
 		</div>
 		<hr />
 		<footer>

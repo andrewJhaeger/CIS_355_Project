@@ -143,6 +143,9 @@ function yeardropdown() {
 							</div>
 							<div class="form-group">
 								<div class="col-md-9 col-md-offset-3">
+									<input type="checkbox" name="checkoutSave">Save this payment info?</input>
+								</div><br />
+								<div class="col-md-9 col-md-offset-3">
 									<button type="submit" name="checkoutSubmit" class="btn btn-primary">Complete Order</button>
 								</div>
 							</div>
