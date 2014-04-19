@@ -25,8 +25,57 @@ $_SESSION['shopping_cart_count'] = 0;
 
 $message = '<h3 align="center">Your order has been submitted! An email confirmation will be sent to you!</h3>';
 
-$body = "Thank you for your order!";
-mail($_SESSION['email'], 'Order Receipt', $body, 'From: admin@sitename.com');
+$headers = "From: admin@sitename.com\r\n";
+$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+$body = '<html>
+			<head>
+				<style>
+					table,th,td
+					{
+						border:1px solid black;
+						border-collapse:collapse;
+					}
+				</style>
+			</head>
+			<body>
+				<center>
+					<h1>Computer Parts Store</h1>
+					<h3>Receipt for '.$_SESSION['firstName'].' '.$_SESSION['lastName'].' on '.date("m/d/Y").'</h3>
+				<br />
+				<table cellpadding="10">
+					<tr>
+						<th>Item</th>
+						<th>Manufacturer</th>
+						<th>Model Number</th>
+						<th>Price (per unit)</th>
+						<th>Quantity Purchased</th>
+						<th>Total</th>
+					</tr>';
+		$totalprice = 0;
+		foreach($_SESSION['allitems'] as &$item) {
+			$body .= '<tr>
+						<td>'.$item['product_name'].'</td>
+						<td>'.$item['manufacturer'].'</td>
+						<td>'.$item['model_number'].'</td>
+						<td>'.$item['price'].'</td>
+						<td>'.$item['quantity'].'</td>
+						<td>'.($item['price']*$item['quantity']).'</td>
+					</tr>';
+				$totalprice += ($item['price']*$item['quantity']);
+		}
+			$body .= '<tr><td></td><td></td><td></td><td></td><td></td><td><b>'.$totalprice.'</b></td></tr>
+				</table>
+				<br />
+						<h3>Subtotal: $'.number_format($totalprice, 2).'</h3>
+						<h3>Sales Tax: $'.number_format(($totalprice*0.06), 2).'</h3>
+						<h3>Grand Total: $'.number_format(($totalprice + ($totalprice*0.06)), 2).'</h3>
+				</center>
+			</body>
+		</html>';
+
+mail($_SESSION['email'], 'Order Receipt', $body, $headers);
+
+//trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 ob_start();
 header("Refresh:3; url=index.php");

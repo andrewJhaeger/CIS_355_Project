@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if ($email && $pass) { // If everything's OK.
 
 			// Query the database:
-			$q = "SELECT id, firstName, email FROM user WHERE (email='$email' AND password=SHA1('$pass')) 
+			$q = "SELECT id, firstName, lastName, email FROM user WHERE (email='$email' AND password=SHA1('$pass')) 
 				  AND active IS NULL";		
 			$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 			
