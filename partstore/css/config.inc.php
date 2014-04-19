@@ -84,6 +84,9 @@ $tablenames[] = 'printers_specs';
 $tablenames[] = 'processors_specs';
 $tablenames[] = 'video_cards_specs';
 
+$approved_file_types = array('application/pdf', 'text/plain', 'image/jpeg', 'image/png', 'image/gif', 'image/tiff', 'image/bmp');
+$approved_file_exts = array('.pdf', '.txt', '.jpeg', '.jpg', '.png', '.gif', '.tiff', '.bmp');
+
 function my_error_handler ($e_number, $e_message, $e_file, $e_line, $e_vars) {
 	$message = "\n\n\nAn error has occurred in script '$e_file' on line $e_line: $e_message\n";
 	$message .= "Date/Time: " . date('n-j-Y H:i:s') . "\n";

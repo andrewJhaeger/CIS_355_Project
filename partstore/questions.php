@@ -22,7 +22,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$errors[] = '<p class="error"> - You forget to enter details about your question!</p>';
 		}
 
-		if ($question_title && $question) {
+		$valid_file = true;
+		if($_FILES['file']['name']) {
+			$file_uploaded = true;
+			if(!$_FILES['file']['error']) {
+				$name = $_FILES["file"]["name"];
+				$ext = end((explode(".", $name)));
+				if(!in_array($_FILES['file']['type'], $approved_file_types) && !in_array($ext, $approved_file_exts)) {
+					$valid_file = false;
+					$errors[] = 'You uploaded a file type that is not accepted.  Here is a list of the accepted file types: .pdf, .txt, .jpeg, .jpg, .png, .gif, .tiff, .bmp';
+				}
+				if($_FILES['file']['size'] > (2100000)) {		//can't be larger than 2 MB
+					$valid_file = false;
+					$errors[] = 'Your file\'s size is to large!';
+				}
+			} else {
+				$valid_file = false;
+				$errors[] = 'Your upload triggered the following error:  '.$_FILES['file']['error'];
+			}
+		} else {
+			$file_uploaded = false;
+		}
+
+		if ($question_title && $question && $valid_file) {
 			$firstName = $_SESSION['firstName'];
 			$q = "INSERT INTO questions (question_title, question, asked_by, replies) VALUES ('$question_title', '$question', '$firstName', '0')";
 	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
@@ -32,7 +54,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				echo '<p class="error">You could not add a new question due to a system error.
 					  We apologize for any inconvenience.</p>';
 				echo '</div></div></div>';
-	        	
+	        } else {
+	        	$q = "SELECT id FROM questions ORDER BY id DESC LIMIT 1";
+		        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+
+		        $question=mysqli_fetch_array($r);
+		        $question_id = $question['id'];
+				if($file_uploaded) {
+					$name = $_FILES["file"]["name"];
+					$ext = end((explode(".", $name)));
+					$file_name = 'question_' . $question_id . '.' . $ext;
+				 	move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/'.$file_name);
+
+				 	$q = "INSERT INTO uploaded_files (post_number, post_type, uploaded_filename, saved_filename) VALUES ('$question_id', 'question', '$name', '$file_name')";
+				 	$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+				}
 	        }
 		} else {
 			echo '<div class="container body-content"><div class="col-md-12"><div class="well">
@@ -53,6 +89,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 $q = "SELECT * FROM questions";
 $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
+$questions = "";
 while($row = mysqli_fetch_array($r)) 
 {  	$questions[] = $row;  }
 
@@ -60,11 +97,13 @@ mysqli_free_result($r);
 mysqli_close($dbc);
 
 function displayQuestions($questions) {
-	foreach ($questions as &$question) {
-		echo '<tr><td><a href="question.php?question=' 
-			 . $question['id'] . '">' . $question['question_title'] 
-			 . '</a></td><td>' . $question['asked_by'] 
-			 . '</td><td>' . $question['replies'] . '</td></tr>';
+	if($questions != "") {
+		foreach ($questions as &$question) {
+			echo '<tr><td><a href="question.php?question=' 
+				 . $question['id'] . '">' . $question['question_title'] 
+				 . '</a></td><td>' . $question['asked_by'] 
+				 . '</td><td>' . $question['replies'] . '</td></tr>';
+		}
 	}
 }
 
@@ -112,18 +151,22 @@ function displayQuestions($questions) {
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
-					if(isset($_SESSION['firstName'])) { 
-						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
-					}
-					echo '</li><li>';
+					 if(isset($_SESSION['firstName'])) { 
+					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					  }
+					  echo '</li><li>';
+					  if(isset($_SESSION['firstName'])) {
+					      echo '<a href="logout.php">Log Out</a>';
+					  } else {
+					      echo '<a href="loginregister.php">Login/Register</a>';
+					  }
+					  echo '</li>';
+					
 					if(isset($_SESSION['firstName'])) {
-						echo '<a href="logout.php">Log Out</a>';
-					} else {
-						echo '<a href="loginregister.php">Login/Register</a>';
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
 					}
-					echo '</li>';
+				
 					?>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
