@@ -141,21 +141,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	    
 			    if (mysqli_affected_rows($dbc) == 1) {
 			    	$submit = true;
+			    	$validemail = true;
 
 					$body = "Thank you for registering. To activate your account, please click on this link:\n\n";
 					$body .= BASE_URL . 'activate.php?em=' . urlencode($email) . "&ac=$a";
-					mail($trimmed['registerEmail'], 'Registration Confirmation', $body, 'From: admin@sitename.com');
-
-					//echo '<p class="error">Thank you for registering! A confirmation email has been sent to you.
-						  //Please click on the link in that email to activate your account.</p>';
-					ob_start();
-					header("Refresh:3; url=index.php");
-					//include ('includes/footer.html')
 					
-					//sleep(5);
-					
-					//exit();
+					if(	!mail($trimmed['registerEmail'], 'Registration Confirmation', $body, 'From: admin@sitename.com') ) {
+						$validemail = false;
+					}
 
+					if($validemail == true) {
+						ob_start();
+						header("Refresh:3; url=index.php");
+					}
+					
 				} else {
 					echo '<p class="error">You could not be registered due to a system error.
 						  We apologize for any inconvenience.</p>';
@@ -224,7 +223,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </ul>				<ul class="nav navbar-nav navbar-right">
 					<?php 
 					if(isset($_SESSION['firstName'])) { 
-						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 					}
 					echo '</li><li>';
 					if(isset($_SESSION['firstName'])) {
@@ -245,8 +244,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     
 	<div class="container body-content">
-		<?php if($submit==true) { echo '<h3 align="center">We have sent you an email. Please click the activiation link 
-										in the email to activate your account.</h3>'; } ?>
+		<?php 
+				if($submit==true) { 
+					if($validemail == true) {
+						echo '<h3 align="center">We have sent you an email. Please click the activiation link 
+						in the email to activate your account.</h3>'; 
+					} else {
+						echo '<h3 align="center">We were unable to send an email to that account. Please try again.</h3>';
+					}
+				}
+		?>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="well">

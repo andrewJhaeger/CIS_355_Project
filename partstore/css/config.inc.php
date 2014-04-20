@@ -1,6 +1,6 @@
 <?php
 
-define('LIVE', FALSE);
+define('LIVE', TRUE);
 define('EMAIL', 'sjfoco@svsu.edu');
 
 define('BASE_URL', 'http://localhost/417/cis_355_project-master/partstore/');

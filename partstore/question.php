@@ -42,8 +42,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 
 		if ($reply && $valid_file) {
-			$firstName = $_SESSION['firstName'];
-			$q = "INSERT INTO answers (question_id, answer, answered_by) VALUES ('$question_number', '$reply', '$firstName')";
+			$name = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
+			
+			$q = "INSERT INTO answers (question_id, answer, answered_by) VALUES ('$question_number', '$reply', '$name')";
 	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 	        if (mysqli_affected_rows($dbc) != 1) {
@@ -187,7 +188,7 @@ function displayReplies($dbc, $replies) {
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
 					 if(isset($_SESSION['firstName'])) { 
-					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 					  }
 					  echo '</li><li>';
 					  if(isset($_SESSION['firstName'])) {

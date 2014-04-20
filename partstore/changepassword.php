@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
 					if(isset($_SESSION['firstName'])) { 
-						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 					}
 					echo '</li><li>';
 					if(isset($_SESSION['firstName'])) {

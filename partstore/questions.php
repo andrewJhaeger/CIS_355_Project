@@ -45,8 +45,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 
 		if ($question_title && $question && $valid_file) {
-			$firstName = $_SESSION['firstName'];
-			$q = "INSERT INTO questions (question_title, question, asked_by, replies) VALUES ('$question_title', '$question', '$firstName', '0')";
+			$name = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
+			$q = "INSERT INTO questions (question_title, question, asked_by, replies) VALUES ('$question_title', '$question', '$name', '0')";
 	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 	        if (mysqli_affected_rows($dbc) != 1) {
@@ -152,7 +152,7 @@ function displayQuestions($questions) {
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
 					 if(isset($_SESSION['firstName'])) { 
-					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 					  }
 					  echo '</li><li>';
 					  if(isset($_SESSION['firstName'])) {

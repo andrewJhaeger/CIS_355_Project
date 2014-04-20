@@ -44,6 +44,7 @@ if(isset($_POST['update'])) {
 			if($_POST[$i] == 0) {
 				$q = "DELETE FROM shopping_cart WHERE upc=".$upcs[$i][0];
 				$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+				$_SESSION['shopping_cart_count'] -= 1;
 			} else {
 				$q = "UPDATE shopping_cart SET quantity=".$_POST[$i]." WHERE upc=".$upcs[$i][0];
 				$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
@@ -65,10 +66,14 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 	$totalquantity = 0;
 	$allitemsarray = array();
 
-	//if(count($upcs == 0)) { 
-	//	echo '<h3 align="center">Your cart is empty! Please browse our selection of items!</h3>'; 
-	//} else {
-
+	if(sizeof($upcs) == 0) { 
+		echo '<h3 align="center">Your cart is empty! Please browse our selection of items!</h3>'; 
+	} else {
+		echo '<legend>Shopping Cart</legend>
+					<div class="row">
+						<form id="cartForm" action="checkout.php" method="post">
+							<table class="table table-bordered productTable" id="cartTable">
+								<tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th></tr>';
 		for($i=0; $i<(sizeof($upcs)); $i++) { // as &$value) {   (count($upcs)-1)
 			foreach($tablenames as &$table) {
 				$q = 'SELECT upc, manufacturer, model_number, product_name, price, rating FROM '.$table.' WHERE upc = '.$upcs[$i][0];
@@ -80,12 +85,8 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 			}
 			
 			$curritem = mysqli_fetch_array($r);
-			echo '<legend>Shopping Cart</legend>
-					<div class="row">
-						<form id="cartForm" action="checkout.php" method="post">
-							<table class="table table-bordered productTable" id="cartTable">
-								<tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th></tr>
-								<tr>
+			
+							echo '<tr>
 									<td><img src="images/products/'.$curritem['upc'].'.jpg" class="productImage" /></td>
 									<td>
 										<a href="product.php?category='.str_replace("_specs", "", $table).
@@ -125,7 +126,7 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 							<button type="submit" class="btn btn-success">Checkout</button>
 						</div>
 						</form>';
-//}
+}
 }
 //trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 //mysqli_free_result($r);
@@ -175,7 +176,7 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
                 </ul>				<ul class="nav navbar-nav navbar-right">
 					<?php 
 					 if(isset($_SESSION['firstName'])) { 
-					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'];
+					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 					  }
 					  echo '</li><li>';
 					  if(isset($_SESSION['firstName'])) {
