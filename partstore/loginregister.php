@@ -11,13 +11,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if(isset($_POST['loginSubmit']))
 	{
 		require (MYSQL);
-	
+		$errors = array();
 		// Validate the email address:
 		if (!empty($_POST['loginEmail'])) {
 			$email = mysqli_real_escape_string ($dbc, $_POST['loginEmail']);
 		} else {
 			$email = FALSE;
-			echo '<p class="error">You forgot to enter your email address!</p>';
+			$errors[] = 'You forgot to enter your email address!';
 		}
 		
 		// Validate the password:
@@ -25,10 +25,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$pass = mysqli_real_escape_string ($dbc, $_POST['loginPassword']);
 		} else {
 			$pass = FALSE;
-			echo '<p class="error">You forgot to enter your password!</p>';
+			$errors[] = 'You forgot to enter your password!';
 		}
 		
 		if ($email && $pass) { // If everything's OK.
+			$correctpass = true;
 
 			// Query the database:
 			$q = "SELECT id, firstName, lastName, email FROM user WHERE (email='$email' AND password=SHA1('$pass')) 
@@ -48,17 +49,25 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				mysqli_free_result($cr);
 				mysqli_close($dbc);			
 				// Redirect the user:
-				$url = BASE_URL . 'index.php'; // Define the URL.
+				$url = 'index.php'; // Define the URL.
 
 				header("Location: $url");
 				exit(); // Quit the script.
 					
 			} else { // No match was made.
-				echo '<p class="error">Either the email address and password entered do not match those on file or you have not yet activated your account.</p>';
+				$errors[] = 'Either the email address and password entered do not match those on file or you have not yet activated your account.';
+				$correctpass = false;
 			}
 			
-		} else { // If everything wasn't OK.
-			echo '<p class="error">Please try again.</p>';
+		}
+
+		if(!($email && $pass) || !$correctpass) { // If everything wasn't OK.
+			echo '<div class="container body-content"><div class="col-md-12"><div class="well">
+			<p class="error">The following error(s) occurred:<br />';
+			foreach ($errors as $msg) { // Print each error.
+				echo " - $msg<br />\n";
+			}
+			echo '</div></div></div>';
 		}
 		
 		mysqli_close($dbc);
@@ -115,10 +124,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$sState = $trimmed['shippingState'];
 		$sZip = $trimmed['shippingZip'];
 
-		$bStreet = $sStreet;
-		$bCity = $sCity;
-		$bState = $sState;
-		$bZip = $sZip;
+		if(($trimmed['billingStreet'] == "") && ($trimmed['billingCity'] == "") && ($trimmed['billingZip'] == "")) {
+			$bStreet = $sStreet;
+			$bCity = $sCity;
+			$bState = $sState;
+			$bZip = $sZip;
+		} else {
+			$bStreet = $trimmed['billingStreet'];
+			$bCity = $trimmed['billingCity'];
+			$bState = $trimmed['shippingState'];
+			$bZip = $trimmed['billingZip'];
+		}
+		
 	//////////////////////////////////////////////// VALIDATE THESE
 
 		if($fn && $midInit && $ln && $email && $pass && $sStreet && $sCity && $sState &&
@@ -146,7 +163,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$body = "Thank you for registering. To activate your account, please click on this link:\n\n";
 					$body .= BASE_URL . 'activate.php?em=' . urlencode($email) . "&ac=$a";
 					
-					if(	!mail($trimmed['registerEmail'], 'Registration Confirmation', $body, 'From: admin@sitename.com') ) {
+					if(	!mail($trimmed['registerEmail'], 'Registration Confirmation', $body, 'From: admin@computerpartssupply.us') ) {
 						$validemail = false;
 					}
 
@@ -184,7 +201,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -192,7 +209,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
@@ -364,7 +381,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		</div>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>

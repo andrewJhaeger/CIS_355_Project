@@ -6,11 +6,9 @@ $page_title = 'Change Your Password';
 
 // If no user is logged in, redirect to the home page.
 if (!isset($_SESSION['firstName'])) {
-	
-	$url = BASE_URL . 'index.php'; 
+	$url = 'index.php'; 
 	header("Location: $url");
 	exit(); 
-	
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -18,37 +16,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			
 	// See if the two password fields match
 	$pass = FALSE;
+	$errors = array();
+	$passwordchanged = false;
+	$samepass = false;
+
 	if (preg_match ('/^(\w){4,20}$/', $_POST['newPassword']) ) {
-		if ($_POST['newPassword'] == $_POST['confirmPasswords']) {
+		if ($_POST['newPassword'] == $_POST['confirmPassword']) {
 			$pass = mysqli_real_escape_string ($dbc, $_POST['newPassword']);
 		} else {
-			echo '<p class="error">Your password did not match the confirmed password!</p>';
+			$errors[] = 'Your password did not match the confirmed password!';
 		}
 	} else {
-		echo '<p class="error">Please enter a valid password!</p>';
+		$errors[] = 'Please enter a valid password!';
 	}
 	
 	if ($pass) {
 
 		// Change the password in the database
-		$q = "UPDATE user SET password=SHA1('$pass') WHERE id={$_SESSION['id']} LIMIT 1";	
+		$q = "UPDATE user SET password='".SHA1($pass)."' WHERE id=".$_SESSION['id']." LIMIT 1";	
 		$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 		if (mysqli_affected_rows($dbc) == 1) { // If a password was changed
-
-
-			// Send an email?
-
-
-			echo 'Your password has been changed.';
+			$passwordchanged = true;
+			//echo '<div class="container body-content"><h3 align="center">Your password has been changed. You may use it next time you log in.</h3></div>';
+			//echo 'Your password has been changed.';
 			mysqli_close($dbc); // Close the connection.
-			exit();
+			//exit();
 			
 		} else { // If no password was changed
-			echo '<p class="error">Your password could not be changed. Make sure the new password is different than the current password.</p>'; 
+			$samepass = true;
+			$errors[] = 'Your password could not be changed. Make sure the new password is different than the current password.'; 
 		}
 
-	} else { 
-		echo '<p class="error">Please try again.</p>';		
+	} 
+	if (!$pass || $samepass) { 
+		echo '<div class="container body-content"><div class="col-md-12"><div class="well">
+			  <p class="error">The following error(s) occurred:<br />';
+		foreach ($errors as $msg) { // Print each error.
+			echo " - $msg<br />\n";
+		}
+		echo '</div></div></div>';	
 	}
 	
 	mysqli_close($dbc); // Close the connection.
@@ -60,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -68,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
@@ -117,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
     
 	<div class="container body-content">
+		<?php if($passwordchanged == true) { echo '<h3 align="center">Your password has been changed. You may use it next time you log in.</h3>'; } ?>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="well">
@@ -144,16 +151,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					</form>
 				</div>
 			</div>
+		</div>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
-		</div>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/jquery.validate.min.js"></script>
 	<script src="scripts/additional-methods.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
-	<script src="scripts/loginregister.js"></script>
+	<script src="scripts/changepassword.js"></script>
 </body>
 </html>

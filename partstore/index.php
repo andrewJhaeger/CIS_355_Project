@@ -6,7 +6,7 @@ session_start();
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -14,7 +14,7 @@ session_start();
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
@@ -68,8 +68,8 @@ session_start();
     
 	<div class="container body-content">
 		<div class="jumbotron">
-			<h1>Computer Parts Store</h1>
-			<p class="lead">Welcome to the Computer Parts Store! This is a simple website written in PHP for our CIS355 project.</p>
+			<h1>Computer Parts Supply</h1>
+			<p class="lead">Welcome to Computer Parts Supply! This is a simple website written in PHP for our CIS355 project.</p>
 			<p><a href="browseitems.php?page=1&category=all" class="btn btn-primary btn-large">Browse Parts Now&raquo;</a></p>
 		</div>
 
@@ -92,7 +92,7 @@ session_start();
 		</div>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>

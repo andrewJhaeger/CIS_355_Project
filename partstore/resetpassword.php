@@ -1,4 +1,5 @@
 <?php 
+session_start();
 
 require('css/config.inc.php');
 $page_title = 'Forgot Your Password';
@@ -7,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	require (MYSQL);
 
 	$id = FALSE;
+	$errors = array();
 
 	// If an email address was entered
 	if (!empty($_POST['email'])) {
@@ -18,20 +20,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (mysqli_num_rows($r) == 1) { 
 			list($id) = mysqli_fetch_array ($r, MYSQLI_NUM); 
 		} else { 
-			echo '<p class="error">That email address is not related to any accounts.</p>';
+			$errors[] = 'That email address is not related to any accounts.';
 		}
 		
 	} else { // If no email address was entered
-		echo '<p class="error">You forgot to enter your email address!</p>';
+		$errors[] = 'You forgot to enter your email address.';
 	} 
 	
 	if ($id) { // If an id was found in the database
-
+		$passwordchanged = false;
 		// Create a random password
 		$newpass = substr(md5(uniqid(rand(), true)), 3, 10);
 
 		// Update the database with the new password
-		$q = "UPDATE user SET password=SHA1('$newpass') WHERE id=$id LIMIT 1";
+		$q = "UPDATE user SET password='".SHA1($newpass)."' WHERE id=".$id." LIMIT 1";
 		$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 		if (mysqli_affected_rows($dbc) == 1) {
@@ -41,19 +43,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					 change your password if you would like to.";
 			mail ($_POST['email'], 'Your new password.', $body, 'From: admin@sitename.com');
 			
-			// Print a message and wrap up:
-			echo 'Your password has been changed. You will receive an email containing a temporary password. Please
-				  log in using this password. You may then chenge it if you would like to.';
-			mysqli_close($dbc);
-			
-			exit(); 
+			$passwordchanged = true;
+			mysqli_close($dbc); 
 			
 		} else { 
-			echo '<p class="error">Your password could not be changed due to a system error. We apologize for any inconvenience.</p>'; 
+			$nochange = true;
+			$errors[] = 'Your password could not be changed due to a system error. We apologize for any inconvenience.'; 
 		}
 
-	} else { 
-		echo '<p class="error">Please try again.</p>';
+	} 
+	if(!$id || $nochange) { 
+		echo '<div class="container body-content"><div class="col-md-12"><div class="well">
+			  <p class="error">The following error(s) occurred:<br />';
+		foreach ($errors as $msg) { // Print each error.
+			echo " - $msg<br />\n";
+		}
+		echo '</div></div></div>';	
 	}
 
 	mysqli_close($dbc);
@@ -65,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -73,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
@@ -104,28 +109,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
-					if(isset($_SESSION['firstName'])) { 
-						echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
-					}
-					echo '</li><li>';
+					 if(isset($_SESSION['firstName'])) { 
+					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
+					  }
+					  echo '</li><li>';
+					  if(isset($_SESSION['firstName'])) {
+					      echo '<a href="logout.php">Log Out</a>';
+					  } else {
+					      echo '<a href="loginregister.php">Login/Register</a>';
+					  }
+					  echo '</li>';
+					
 					if(isset($_SESSION['firstName'])) {
-						echo '<a href="logout.php">Log Out</a>';
-					} else {
-						echo '<a href="loginregister.php">Login/Register</a>';
+						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
 					}
-					echo '</li>';
+				
 					?>
-					<li><a href="cart.php">Cart &nbsp;<span class="badge">4</span></a></li>
 				</ul>
             </div>
         </div>
     </div>
     
 	<div class="container body-content">
+		<?php if($passwordchanged == true) { echo '<h3 align="center">Your password has been reset. Your temporary password has been emailed to you.</h3>'; } ?>
 		<div class="row">
 			<div class="col-md-6">
 				<div class="well">
-					<form class="form-horizontal" id="loginForm" action="resetpassword.php" method="post" novalidate>
+					<form class="form-horizontal" id="resetForm" action="resetpassword.php" method="post" novalidate>
 						<fieldset>
 							<legend>Reset Your Password</legend>
 							<div class="form-group">
@@ -146,13 +156,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		</div>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/jquery.validate.min.js"></script>
 	<script src="scripts/additional-methods.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
-	<script src="scripts/loginregister.js"></script>
+	<script src="scripts/resetpassword.js"></script>
 </body>
 </html>

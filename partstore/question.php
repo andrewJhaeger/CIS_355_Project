@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$reply = mysqli_real_escape_string ($dbc, $_POST['questionReply']);
 		} else {
 			$reply = FALSE;
-			$errors[] = '<p class="error"> - You forget to enter a reply!</p>';
+			$errors[] = '<p class="error"> - You forgot to enter a reply!</p>';
 		}
 
 		$valid_file = true;
@@ -148,7 +148,7 @@ function displayReplies($dbc, $replies) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -156,7 +156,7 @@ function displayReplies($dbc, $replies) {
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
@@ -233,10 +233,12 @@ function displayReplies($dbc, $replies) {
 		</form>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
+	<script src="scripts/jquery.validate.min.js"></script>
+	<script src="scripts/question.js"></script>
 </body>
 </html>

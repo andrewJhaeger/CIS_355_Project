@@ -1,9 +1,9 @@
 <?php
 // Set the database access information as constants:
-DEFINE ('DB_USER', 'root');
-DEFINE ('DB_PASSWORD', '');
+DEFINE ('DB_USER', 'sjfoco');
+DEFINE ('DB_PASSWORD', 'v!nvXy58axrV');
 DEFINE ('DB_HOST', 'localhost');
-DEFINE ('DB_NAME', 'computer_parts_store');
+DEFINE ('DB_NAME', 'sjfoco_computerparts');
 
 // Make the connection:
 $dbc = @mysqli_connect (DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) OR die ('Could not connect to MySQL: ' . mysqli_connect_error() );

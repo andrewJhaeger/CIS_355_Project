@@ -12,14 +12,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$question_title = mysqli_real_escape_string ($dbc, $_POST['newQuestion']);
 		} else {
 			$question_title = FALSE;
-			$errors[] = '<p class="error"> - You forget to enter a question!</p>';
+			$errors[] = '<p class="error"> - You forgot to enter a question!</p>';
 		}
 
 		if (!empty($_POST['newQuestionDetails'])) {
 			$question = mysqli_real_escape_string ($dbc, $_POST['newQuestionDetails']);
 		} else {
 			$question = FALSE;
-			$errors[] = '<p class="error"> - You forget to enter details about your question!</p>';
+			$errors[] = '<p class="error"> - You forgot to enter details about your question!</p>';
 		}
 
 		$valid_file = true;
@@ -34,7 +34,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				}
 				if($_FILES['file']['size'] > (2100000)) {		//can't be larger than 2 MB
 					$valid_file = false;
-					$errors[] = 'Your file\'s size is to large!';
+					$errors[] = 'Your file\'s size is too large!';
 				}
 			} else {
 				$valid_file = false;
@@ -79,10 +79,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			echo '</div></div></div>';
 		}
 	} else {
-		echo '<div class="container body-content"><div class="col-md-12"><div class="well">';
-		echo '<p class="error">You could not add a new question because you are not logged in.  
-			 Please log in, then try again.</p>';
-		echo '</div></div></div>';
+		echo '<div class="container body-content"><div class="col-md-12">';//<div class="well">';
+		//echo '<p class="error">You could not add a new question because you are not logged in.  
+			 //Please log in, then try again.</p>';
+		echo '<h3 align="center">You could not add a new question because you are not logged in. Please log in, then try again.</h3>';
+		echo '</div></div>';//</div>';
 	}
 }
 
@@ -112,7 +113,7 @@ function displayQuestions($questions) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -120,7 +121,7 @@ function displayQuestions($questions) {
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
               <ul class="nav navbar-nav">
@@ -208,10 +209,12 @@ function displayQuestions($questions) {
 		</div>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
+	<script src="scripts/jquery.validate.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
+	<script src="scripts/questions.js"></script>
 </body>
 </html>

@@ -40,7 +40,7 @@ function yeardropdown() {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -48,7 +48,7 @@ function yeardropdown() {
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
@@ -134,7 +134,9 @@ function yeardropdown() {
 										<?php yeardropdown(); ?>
 									</select>
 								</div>
-								<label class="col-md-1 control-label">CVV2:</label>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">CVV2:</label>
 								<div class="col-md-2">
 									<input type="number" min="0" max="999" class="form-control" id="securityCode" name="securityCode" 
 									<?php if($infoexists) { echo ' value="'.$paymentinfo['security_code'].'"'; } ?> data-toggle="tooltip" 
@@ -171,11 +173,13 @@ function yeardropdown() {
 		</div>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
+	<script src="scripts/jquery.validate.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>
+	<script src="scripts/checkout.js"></script>
 	<script>
 		$(function () {
 			$('#securityCode').tooltip();

@@ -38,8 +38,17 @@ if(isset($_POST['order'])) {
 		case "Alphabetical":
 			$q .= " ORDER BY product_name";
 			break;
-		case "Price":
-			$q .= " ORDER BY price";
+		case "PriceLH":
+			$q .= " ORDER BY price ASC";
+			break;
+		case "PriceHL":
+			$q .= " ORDER BY price DESC";
+			break;
+		case "Rating":
+			$q .= " ORDER BY rating DESC";
+			break;
+		case "Manufacturer":
+			$q .= " ORDER BY manufacturer";
 			break;
 	}
 }
@@ -88,7 +97,7 @@ function showproducts($page, $specs)
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -96,7 +105,7 @@ function showproducts($page, $specs)
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
              	<ul class="nav navbar-nav">
@@ -151,14 +160,17 @@ function showproducts($page, $specs)
 	<div class="container body-content">
 		<legend><?php echo $page_title; ?></legend>
 		<?php echo '<form id="orderBy" action="browseitems.php?page=1&category='.$_GET['category'].'" method="post">'; ?>
-		<legend>Order By: 
+		Order By: 
 			<?php 
 			echo '<select value="Alphabetical" name="order" onChange="submit();" >'; ?>
 				<option></option>
-				<option value="Price" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'Price') { echo 'selected'; } } ?>>Price</option>
+				<option value="PriceHL" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'PriceHL') { echo 'selected'; } } ?>>Price (High to Low)</option>
+				<option value="PriceLH" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'PriceLH') { echo 'selected'; } } ?>>Price (Low to High)</option>
 				<option value="Alphabetical" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'Alphabetical') { echo 'selected'; } } ?>>Alphabetical</option>
+				<option value="Rating" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'Rating') { echo 'selected'; } } ?>>Rating (High to Low)</option>
+				<option value="Manufacturer" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'Manufacturer') { echo 'selected'; } } ?>>Manufacturer</option>
 			</select>
-		</legend>
+		
 		
 	</form>
 		<table class="table table-bordered" id="productList">
@@ -205,7 +217,7 @@ function showproducts($page, $specs)
 		</div>
 		<hr />
 		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
+			<p>&copy; 2014 - Computer Parts Supply</p>
 		</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>

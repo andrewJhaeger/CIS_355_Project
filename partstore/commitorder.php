@@ -25,7 +25,7 @@ $_SESSION['shopping_cart_count'] = 0;
 
 $message = '<h3 align="center">Your order has been submitted! An email confirmation will be sent to you!</h3>';
 
-$headers = "From: admin@sitename.com\r\n";
+$headers = "From: admin@computerpartssupply.us\r\n";
 $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
 $body = '<html>
 			<head>
@@ -39,7 +39,7 @@ $body = '<html>
 			</head>
 			<body>
 				<center>
-					<h1>Computer Parts Store</h1>
+					<h1>Computer Parts Supply</h1>
 					<h3>Receipt for '.$_SESSION['firstName'].' '.$_SESSION['lastName'].' on '.date("m/d/Y").'</h3>
 				<br />
 				<table cellpadding="10">
@@ -87,7 +87,7 @@ header("Refresh:3; url=index.php");
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>

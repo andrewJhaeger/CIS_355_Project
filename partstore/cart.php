@@ -125,7 +125,8 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 							<button type="submit" name="update" formaction="cart.php" class="btn btn-primary">Update Quantities</button> <!--formaction="cart.php"-->
 							<button type="submit" class="btn btn-success">Checkout</button>
 						</div>
-						</form>';
+						</form>
+					</div>';
 }
 }
 //trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
@@ -137,7 +138,7 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
@@ -145,7 +146,7 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.php">Computer Parts Store</a>
+                <a class="navbar-brand" href="index.php">Computer Parts Supply</a>
             </div>
             <div class="navbar-collapse collapse navbar-responsive-collapse">
                 <ul class="nav navbar-nav">
@@ -204,11 +205,11 @@ showcartitems($upcs, $tablenames, $dbc, $carttotal, $totalquantity);
 
 ?>
 					
-		</div>
-		<hr />
-		<footer>
-			<p>&copy; 2014 - Computer Parts Store</p>
-		</footer>
+	</div>
+	<hr />
+	<footer>
+		<p>&copy; 2014 - Computer Parts Supply</p>
+	</footer>
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>

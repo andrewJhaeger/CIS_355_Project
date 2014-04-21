@@ -3,7 +3,7 @@
 define('LIVE', TRUE);
 define('EMAIL', 'sjfoco@svsu.edu');
 
-define('BASE_URL', 'http://localhost/417/cis_355_project-master/partstore/');
+define('BASE_URL', 'http://www.computerpartssupply.us/');
 define('MYSQL', 'mysqli_connect.php');
 
 date_default_timezone_set('US/Eastern');

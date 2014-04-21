@@ -17,7 +17,7 @@ if (!isset($_SESSION['firstName'])) {
 	session_destroy(); // Destroy the session itself.
 	setcookie (session_name(), '', time()-3600); // Destroy the cookie.
 	
-	$message = 'You have been succesfully logged out. Redirecting you to the home page now.';
+	$message = 'You have been successfully logged out. Redirecting you to the home page now.';
 	ob_start();
 	header("Refresh:3; url=$url");
 }
@@ -27,7 +27,7 @@ if (!isset($_SESSION['firstName'])) {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Computer Parts Store</title>
+    <title>Computer Parts Supply</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
 	<link href="css/style.css" rel="stylesheet"/>
 </head>
