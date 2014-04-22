@@ -83,6 +83,7 @@ $tablenames[] = 'motherboards_specs';
 $tablenames[] = 'printers_specs';
 $tablenames[] = 'processors_specs';
 $tablenames[] = 'video_cards_specs';
+$tablenames[] = 'memory_specs';
 
 $approved_file_types = array('application/pdf', 'text/plain', 'image/jpeg', 'image/png', 'image/gif', 'image/tiff', 'image/bmp');
 $approved_file_exts = array('.pdf', '.txt', '.jpeg', '.jpg', '.png', '.gif', '.tiff', '.bmp');

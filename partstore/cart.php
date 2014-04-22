@@ -83,9 +83,7 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 					break 1;	
 				}
 			}
-			
 			$curritem = mysqli_fetch_array($r);
-			
 							echo '<tr>
 									<td><img src="images/products/'.$curritem['upc'].'.jpg" class="productImage" /></td>
 									<td>
@@ -174,23 +172,22 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
 						</ul>
 					</li>
 					<li><a href="questions.php">Q&amp;A</a></li>
-                </ul>				<ul class="nav navbar-nav navbar-right">
+                </ul>				
+                <ul class="nav navbar-nav navbar-right">
 					<?php 
-					 if(isset($_SESSION['firstName'])) { 
-					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
-					  }
-					  echo '</li><li>';
-					  if(isset($_SESSION['firstName'])) {
-			              echo '<a href="logout.php">Log Out</a>';
-					  } else {
-					      echo '<a href="loginregister.php">Login/Register</a>';
-					  }
-					  echo '</li>';
-					
-					if(isset($_SESSION['firstName'])) {
-						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
-					}
-				
+						if(isset($_SESSION['firstName'])) { 
+					        echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
+					    }
+					    echo '</li><li>';
+					    if(isset($_SESSION['firstName'])) {
+			                echo '<a href="logout.php">Log Out</a>';
+					    } else {
+					        echo '<a href="loginregister.php">Login/Register</a>';
+					    }
+					    echo '</li>';
+					    if(isset($_SESSION['firstName'])) {
+						     echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
+						}
 					?>
 				</ul>
             </div>
@@ -199,17 +196,14 @@ function showcartitems($upcs, $tablenames, $dbc, &$carttotal, &$totalquantity) {
     
 	<div class="container body-content">
 		
-<?php
-showcartitems($upcs, $tablenames, $dbc, $carttotal, $totalquantity);
+		<?php
+			showcartitems($upcs, $tablenames, $dbc, $carttotal, $totalquantity);
+		?>
 
-
-?>
-					
-	</div>
-	<hr />
-	<footer>
-		<p>&copy; 2014 - Computer Parts Supply</p>
-	</footer>
+		<hr />
+		<footer>
+			<p>&copy; 2014 - Computer Parts Supply</p>
+		</footer>				
 	</div>
 	<script src="scripts/jquery-1.11.0.min.js"></script>
 	<script src="scripts/bootstrap.min.js"></script>

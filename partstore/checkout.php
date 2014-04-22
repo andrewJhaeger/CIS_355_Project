@@ -8,28 +8,30 @@ $infoexists = false;
 $q = "SELECT * FROM payment_information WHERE email='".$_SESSION['email']."'";
 $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
+$paymentinfo = array();
 if(mysqli_num_rows($r) > 0) {
-	$paymentinfo = mysqli_fetch_array($r);
+	while($row = mysqli_fetch_array($r)) 
+	{  	$paymentinfo[] = $row;  }
 	$infoexists = true;
 }
-
+//trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 $selectedmonth = array();
 
-function monthdropdown() {
+function monthdropdown($index, $paymentinfo) {
 	$months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December");
 
 	for($i=0; $i<12; $i++) {
 		$selected = "";
-		if($months[$i] == $paymentinfo['expiration_month']) { $selected = "selected"; } 
+		if($months[$i] == $paymentinfo[$index]['expiration_month']) { $selected = "selected"; } 
 
 		echo '<option value="'.$months[$i].'" '.$selected.'>'.$months[$i].'</option>';
 	}
 }
 
-function yeardropdown() {
+function yeardropdown($index, $paymentinfo) {
 	for($i=2014; $i<2023; $i++) {
 		$selected = "";
-		if($i == $paymentinfo['expiration_year']) { $selected = "selected"; }
+		if($i == $paymentinfo[$index]['expiration_year']) { $selected = "selected"; }
 
 		echo '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
 	}
@@ -101,7 +103,22 @@ function yeardropdown() {
     </div>
     
 	<div class="container body-content">
-		<div class="row"><h3>Checkout</h3></div>
+		<legend>Checkout</legend>
+		<?php echo '<form id="paymentSelect" action="checkout.php" method="POST">'; ?>
+		Saved Credit Cards: 
+			<?php 
+				echo '<input type="hidden" name="totalquantity" value="'.$_POST['totalquantity'].'">';
+				echo '<input type="hidden" name="subtotal" value="'.$_POST['subtotal'].'">';
+				echo '<select name="cardChoice" onChange="submit();" >';
+				echo '<option></option>';
+					for($i=0; $i<sizeof($paymentinfo); $i++) {
+						echo '<option value='.$i.'>Card Ending in '.substr($paymentinfo[$i]['card_number'], -4).'</option>';
+					}
+					if($i==0) { echo '<option disabled>No cards saved!</option>'; }
+				echo '</select>';
+			?>
+		
+		</form>
 		<div class="row">
 			<div class="col-md-8">
 				<div class="well">
@@ -112,26 +129,26 @@ function yeardropdown() {
 								<label for="cardholderName" class="col-md-3 control-label">Cardholder Name:</label>
 								<div class="col-md-9">
 									<input type="text" class="form-control" id="cardholderName" name="cardholderName" 
-									<?php if($infoexists) { echo ' value="'.$paymentinfo['name_on_card'].'"'; } ?> placeholder="Cardholder Name" />
+									<?php if(isset($_POST['cardChoice'])) { echo ' value="'.$paymentinfo[$_POST['cardChoice']]['name_on_card'].'"'; } ?> placeholder="Cardholder Name" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">Credit Card Number:</label>
-								<div class="col-md-9">
+								<div class="col-md-9"> 
 									<input type="text" class="form-control" id="cardNumber" name="cardNumber" 
-									<?php if($infoexists) { echo ' value="'.$paymentinfo['card_number'].'"'; } ?> placeholder="Card Number" />
+									<?php if(isset($_POST['cardChoice'])) { echo ' value="'.$paymentinfo[$_POST['cardChoice']]['card_number'].'"'; } ?> placeholder="Card Number" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-3 control-label">Expiration Date:</label>
 								<div class="col-md-3">
 									<select class="form-control" id="expirationMonth" name="expirationDate">
-										<?php monthdropdown(); ?>
+										<?php monthdropdown($_POST['cardChoice'], $paymentinfo); ?>
 									</select>
 								</div>
 								<div class="col-md-2">
 									<select class="form-control" id="expirationYear" name="expirationYear">
-										<?php yeardropdown(); ?>
+										<?php yeardropdown($_POST['cardChoice'], $paymentinfo); ?>
 									</select>
 								</div>
 							</div>
@@ -139,14 +156,16 @@ function yeardropdown() {
 								<label class="col-md-3 control-label">CVV2:</label>
 								<div class="col-md-2">
 									<input type="number" min="0" max="999" class="form-control" id="securityCode" name="securityCode" 
-									<?php if($infoexists) { echo ' value="'.$paymentinfo['security_code'].'"'; } ?> data-toggle="tooltip" 
+									<?php if(isset($_POST['cardChoice'])) { echo ' value="'.$paymentinfo[$_POST['cardChoice']]['security_code'].'"'; } ?> data-toggle="tooltip" 
 									data-placement="bottom" title="Your credit card's 3 digit security code" />
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-md-9 col-md-offset-3">
-									<input type="checkbox" name="checkoutSave">Save this payment info?</input>
-								</div><br />
+									<input type="checkbox" value="checked" name="checkoutSave"> Keep this card in the system for future purchases.</input>
+								</div>
+							</div>
+							<div class="form-group">
 								<div class="col-md-9 col-md-offset-3">
 									<button type="submit" name="checkoutSubmit" class="btn btn-primary">Complete Order</button>
 								</div>

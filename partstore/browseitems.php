@@ -162,17 +162,15 @@ function showproducts($page, $specs)
 		<?php echo '<form id="orderBy" action="browseitems.php?page=1&category='.$_GET['category'].'" method="post">'; ?>
 		Order By: 
 			<?php 
-			echo '<select value="Alphabetical" name="order" onChange="submit();" >'; ?>
+			echo '<select name="order" onChange="submit();" >'; ?>
 				<option></option>
 				<option value="PriceHL" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'PriceHL') { echo 'selected'; } } ?>>Price (High to Low)</option>
 				<option value="PriceLH" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'PriceLH') { echo 'selected'; } } ?>>Price (Low to High)</option>
 				<option value="Alphabetical" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'Alphabetical') { echo 'selected'; } } ?>>Alphabetical</option>
 				<option value="Rating" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'Rating') { echo 'selected'; } } ?>>Rating (High to Low)</option>
 				<option value="Manufacturer" <?php if(isset($_POST['order'])) { if($_POST['order'] == 'Manufacturer') { echo 'selected'; } } ?>>Manufacturer</option>
-			</select>
-		
-		
-	</form>
+			</select>		
+		</form>
 		<table class="table table-bordered" id="productList">
 				<thead>
 					<tr>

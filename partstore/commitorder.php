@@ -4,11 +4,14 @@ session_start();
 require('css/config.inc.php');
 require (MYSQL);
 
-if($_POST['checkoutSave'] = "checked") {
+if($_POST['checkoutSave'] == "checked") {
 	$q = "INSERT INTO payment_information (email, card_number, name_on_card, expiration_month,
 		  expiration_year, security_code) VALUES ('".$_SESSION['email']."','".$_POST['cardNumber']."','".
 		  $_POST['cardholderName']."','".$_POST['expirationDate']."','".$_POST['expirationYear']."','".
 		  $_POST['securityCode']."')";
+	$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
+} else {
+	$q = "DELETE FROM payment_information WHERE email='".$_SESSION['email']."' AND card_number='".$_POST['cardNumber']."'";
 	$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 }
 
