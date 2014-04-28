@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$email = FALSE;
 			$errors[] = 'You forgot to enter your email address!';
 		}
-		
+
 		// Validate the password:
 		if (!empty($_POST['loginPassword'])) {
 			$pass = mysqli_real_escape_string ($dbc, $_POST['loginPassword']);
@@ -27,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$pass = FALSE;
 			$errors[] = 'You forgot to enter your password!';
 		}
-		
+
 		if ($email && $pass) { // If everything's OK.
 			$correctpass = true;
 
@@ -35,12 +35,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$q = "SELECT id, firstName, lastName, email FROM user WHERE (email='$email' AND password=SHA1('$pass')) 
 				  AND active IS NULL";		
 			$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
-			
+
 			if (@mysqli_num_rows($r) == 1) { // A match was made.
 
 				// Register the values:
 				$_SESSION = mysqli_fetch_array ($r, MYSQLI_ASSOC); 
-				
+
 				$cq = "SELECT * FROM shopping_cart WHERE email='".$_SESSION['email']."'";
 				$cr = mysqli_query ($dbc, $cq) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 				$_SESSION["shopping_cart_count"] = mysqli_num_rows($cr);	
@@ -53,12 +53,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 				header("Location: $url");
 				exit(); // Quit the script.
-					
+
 			} else { // No match was made.
 				$errors[] = 'Either the email address and password entered do not match those on file or you have not yet activated your account.';
 				$correctpass = false;
 			}
-			
+
 		}
 
 		if(!($email && $pass) || !$correctpass) { // If everything wasn't OK.
@@ -69,7 +69,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 			echo '</div></div></div>';
 		}
-		
+
 		mysqli_close($dbc);
 
 	} elseif(isset($_POST['registerSubmit'])) {
@@ -111,7 +111,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		} else {
 			$errors[] = 'Please enter a valid password';
 		}
-	
+
 		if(preg_match('/^[A-Z]$/i', $trimmed['middleInitial'])){
             $midInit = mysqli_real_escape_string($dbc, $trimmed['middleInitial']);
         } else {
@@ -119,27 +119,85 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 	//////////////////////////////////////////////// VALIDATE THESE
-		$sStreet = $trimmed['shippingStreet'];
-		$sCity = $trimmed['shippingCity'];
-		$sState = $trimmed['shippingState'];
-		$sZip = $trimmed['shippingZip'];
+		//$sStreet = $trimmed['shippingStreet'];
+		//$sCity = $trimmed['shippingCity'];
+		//$sState = $trimmed['shippingState'];
+		//$sZip = $trimmed['shippingZip'];
 
-		if(($trimmed['billingStreet'] == "") && ($trimmed['billingCity'] == "") && ($trimmed['billingZip'] == "")) {
+		if(preg_match("/^[0-9]{1,5} +[a-zA-Z ]{2,95}$/i", $trimmed['shippingStreet'])) {
+        	$sStreet = mysqli_real_escape_string($dbc, $trimmed['shippingStreet']);
+        } else {
+        	$errors[] = 'Please enter a valid shipping street address';
+        }
+		
+		if(preg_match("/^[a-zA-Z ]{2,50}$/i", $trimmed['shippingCity'])) {
+		// if(isset($trimmed['shippingCity'])) {
+			$sCity = mysqli_real_escape_string($dbc, $trimmed['shippingCity']);
+		} else {
+			$errors[] = 'Please enter a valid shipping city';
+		}
+
+		if(!empty($trimmed['shippingState'])) {
+			$sState = mysqli_real_escape_string($dbc, $trimmed['shippingState']);
+		} else {
+			$errors[] = 'Please choose your shipping state';
+		}
+		
+	    if(preg_match("/^[0-9]{5}$/i", $trimmed['shippingZip'])) {
+	    	$sZip = mysqli_real_escape_string($dbc, $trimmed['shippingZip']);
+	    } else {
+	    	$errors[] = 'Please enter your 5 digit shipping zip code';
+	    }
+
+		//if(($trimmed['billingStreet'] == "") && ($trimmed['billingCity'] == "") && ($trimmed['billingZip'] == "")) {
+		if(empty($trimmed['billingStreet']) && empty($trimmed['billingCity']) && empty($trimmed['billingZip'])) {
 			$bStreet = $sStreet;
 			$bCity = $sCity;
 			$bState = $sState;
 			$bZip = $sZip;
 		} else {
-			$bStreet = $trimmed['billingStreet'];
-			$bCity = $trimmed['billingCity'];
-			$bState = $trimmed['shippingState'];
-			$bZip = $trimmed['billingZip'];
+			// $bStreet = $trimmed['billingStreet'];
+			// $bCity = $trimmed['billingCity'];
+			// $bState = $trimmed['shippingState'];
+			// $bZip = $trimmed['billingZip'];
+
+			if(preg_match("/^[0-9]{1,5} +[a-zA-Z ]{2,95}$/i", $trimmed['billingStreet'])) {
+	        	$bStreet = mysqli_real_escape_string($dbc, $trimmed['billingStreet']);
+	        } else {
+	        	$errors[] = 'Please enter a valid billing street address';
+	        }
+			
+			if(preg_match("/^[a-zA-Z ]{2,50}$/i", $trimmed['billingCity'])) {
+			// if(isset($trimmed['shippingCity'])) {
+				$bCity = mysqli_real_escape_string($dbc, $trimmed['billingCity']);
+			} else {
+				$errors[] = 'Please enter a valid billing city';
+			}
+
+			if(!empty($trimmed['billingState'])) {
+				$bState = mysqli_real_escape_string($dbc, $trimmed['billingState']);
+			} else {
+				$errors[] = 'Please choose your billing state';
+			}
+			
+		    if(preg_match("/^[0-9]{5}$/i", $trimmed['billingZip'])) {
+		    	$bZip = mysqli_real_escape_string($dbc, $trimmed['billingZip']);
+		    } else {
+		    	$errors[] = 'Please enter your 5 digit billing zip code';
+		    }
 		}
-		
+
 	//////////////////////////////////////////////// VALIDATE THESE
 
-		if($fn && $midInit && $ln && $email && $pass && $sStreet && $sCity && $sState &&
-			$sZip && $bStreet && $bCity && $bState && $bZip) 
+		$missinginfo = false;
+		$alreadyexists = false;
+
+
+
+
+		//if($fn && $midInit && $ln && $email && $pass && $sStreet && $sCity && $sState &&
+		//	$sZip && $bStreet && $bCity && $bState && $bZip) 
+		if(empty($errors)) 
 		{
 			$q = "SELECT id FROM user WHERE email='$email'";
 			$r = mysqli_query($dbc, $q) or trigger_error("Query $q\n<br />MySQL Error: " .
@@ -155,14 +213,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 					  		  '$bCity', '$bState', '$bZip')";
 				$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " .  
 					 mysqli_error($dbc));
-	    
+
 			    if (mysqli_affected_rows($dbc) == 1) {
 			    	$submit = true;
 			    	$validemail = true;
 
 					$body = "Thank you for registering. To activate your account, please click on this link:\n\n";
 					$body .= BASE_URL . 'activate.php?em=' . urlencode($email) . "&ac=$a";
-					
+
 					if(	!mail($trimmed['registerEmail'], 'Registration Confirmation', $body, 'From: admin@computerpartssupply.us') ) {
 						$validemail = false;
 					}
@@ -171,19 +229,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 						ob_start();
 						header("Refresh:3; url=index.php");
 					}
-					
+
 				} else {
-					echo '<p class="error">You could not be registered due to a system error.
-						  We apologize for any inconvenience.</p>';
+					$errors[] = 'You could not be registered due to a system error.
+						  We apologize for any inconvenience.';
 				}
 
 			} else {
-				echo '<p class="error">That email address has already been registered. If you
+				$errors[] = 'That email address has already been registered. If you
 				      have forgotten your password, please use the forgotten password link to 
-				      have it sent to you.</p>';
+				      have it sent to you.';
 			}
 
-		} else {
+		} 
+		if(count($errors) > 0) {
 			echo '<div class="container body-content"><div class="col-md-12"><div class="well">
 			<p class="error">The following error(s) occurred:<br />';
 			foreach ($errors as $msg) { // Print each error.
@@ -249,11 +308,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 						echo '<a href="loginregister.php">Login/Register</a>';
 					}
 					echo '</li>';
-					
+
 					if(isset($_SESSION['firstName'])) {
 						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
 					}
-				
+
 					?>
 				</ul>
             </div>
@@ -280,13 +339,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 							<div class="form-group">
 								<label for="loginEmail" class="col-md-2 control-label">Email</label>
 								<div class="col-md-10">
-									<input type="email" class="form-control" name="loginEmail" id="loginEmail" placeholder="Email" />
+									<input type="email" <?php if(isset($_POST['loginEmail'])) { echo ' value="'.$_POST['loginEmail'].'" '; } ?> class="form-control" name="loginEmail" id="loginEmail" placeholder="Email" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="loginPassword" class="col-md-2 control-label">Password</label>
 								<div class="col-md-10">
-									<input type="password" class="form-control" name="loginPassword" id="loginPassword" placeholder="Password" />
+									<input type="password" <?php if(isset($_POST['loginPassword'])) { echo ' value="'.$_POST['loginPassword'].'" '; } ?> class="form-control" name="loginPassword" id="loginPassword" placeholder="Password" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -308,55 +367,55 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 							<div class="form-group">
 								<label class="col-md-3 control-label">Name</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control" name="firstName" id="firstName" placeholder="First" />
+									<input type="text" <?php if(isset($_POST['firstName'])) { echo ' value="'.$_POST['firstName'].'" '; } ?> class="form-control" name="firstName" id="firstName" placeholder="First" />
 								</div>
 								<div class="col-md-2">
-									<input type="text" class="form-control" name="middleInitial" id="middleInitial" placeholder="MI" />
+									<input type="text" <?php if(isset($_POST['middleInitial'])) { echo ' value="'.$_POST['middleInitial'].'" '; } ?> class="form-control" name="middleInitial" id="middleInitial" placeholder="MI" />
 								</div>
 								<div class="col-md-4">
-									<input type="text" class="form-control" name="lastName" id="lastName" placeholder="Last" />
+									<input type="text" <?php if(isset($_POST['lastName'])) { echo ' value="'.$_POST['lastName'].'" '; } ?> class="form-control" name="lastName" id="lastName" placeholder="Last" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="registerEmail" class="col-md-3 control-label">Email</label>
 								<div class="col-md-9">
-									<input type="email" class="form-control" name="registerEmail" id="registerEmail" placeholder="Email" />
+									<input type="email" <?php if(isset($_POST['registerEmail'])) { echo ' value="'.$_POST['registerEmail'].'" '; } ?> class="form-control" name="registerEmail" id="registerEmail" placeholder="Email" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="registerPassword" class="col-md-3 control-label">Password</label>
 								<div class="col-md-9">
-									<input type="password" class="form-control" name="registerPassword" id="registerPassword" placeholder="Password" />
+									<input type="password" <?php if(isset($_POST['registerPassword'])) { echo ' value="'.$_POST['registerPassword'].'" '; } ?> class="form-control" name="registerPassword" id="registerPassword" placeholder="Password" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="registerConfirmPassword" class="col-md-3 control-label">Confirm Password</label>
 								<div class="col-md-9">
-									<input type="password" class="form-control" name="registerConfirmPassword" id="registerConfirmPassword" placeholder="Confirm Password" />
+									<input type="password" <?php if(isset($_POST['registerConfirmPassword'])) { echo ' value="'.$_POST['registerConfirmPassword'].'" '; } ?> class="form-control" name="registerConfirmPassword" id="registerConfirmPassword" placeholder="Confirm Password" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="homePhone" class="col-md-3 control-label">Home Phone</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="homePhone" id="homePhone" placeholder="Home Phone" />
+									<input type="text" <?php if(isset($_POST['homePhone'])) { echo ' value="'.$_POST['homePhone'].'" '; } ?> class="form-control" name="homePhone" id="homePhone" placeholder="Home Phone" />
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="cellPhone" class="col-md-3 control-label">Cell Phone</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="cellPhone" id="cellPhone" placeholder="Cell Phone" />
+									<input type="text" <?php if(isset($_POST['cellPhone'])) { echo ' value="'.$_POST['cellPhone'].'" '; } ?> class="form-control" name="cellPhone" id="cellPhone" placeholder="Cell Phone" />
 								</div>
 							</div>
 							<div id="shippingAddressForm">
 								<div class="form-group">
 									<label class="col-md-3 control-label">Shipping Address</label>
 									<div class="col-md-9">
-										<input type="text" class="form-control" name="shippingStreet" id="shippingStreet" placeholder="Street Address" />
+										<input type="text" <?php if(isset($_POST['shippingStreet'])) { echo ' value="'.$_POST['shippingStreet'].'" '; } ?> class="form-control" name="shippingStreet" id="shippingStreet" placeholder="Street Address" />
 									</div>
 								</div>
 								<div class="form-group">
 									<div class="col-md-3 col-md-offset-3">
-										<input type="text" class="form-control" name="shippingCity" id="shippingCity" placeholder="City" />
+										<input type="text" <?php if(isset($_POST['shippingCity'])) { echo ' value="'.$_POST['shippingCity'].'" '; } ?> class="form-control" name="shippingCity" id="shippingCity" placeholder="City" />
 									</div>
 									<div class="col-md-3">
 										<select class="form-control" name="shippingState" id="shippingState" placeholder="State"> 
@@ -364,7 +423,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 										</select>
 									</div>
 									<div class="col-md-3">
-										<input type="number" class="form-control" name="shippingZip" id="shippingZip" placeholder="ZIP" />
+										<input type="number" <?php if(isset($_POST['shippingZip'])) { echo ' value="'.$_POST['shippingZip'].'" '; } ?> class="form-control" name="shippingZip" id="shippingZip" placeholder="ZIP" />
 									</div>
 								</div>
 							</div>

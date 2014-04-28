@@ -44,9 +44,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$file_uploaded = false;
 		}
 
+		$datetime = date('m-d-Y H:i:s');
 		if ($question_title && $question && $valid_file) {
 			$name = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
-			$q = "INSERT INTO questions (question_title, question, asked_by, replies) VALUES ('$question_title', '$question', '$name', '0')";
+			$q = "INSERT INTO questions (question_title, question, asked_by, replies, date_time) VALUES ('$question_title', '$question', '$name', '0', '$datetime')";
 	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 	        if (mysqli_affected_rows($dbc) != 1) {

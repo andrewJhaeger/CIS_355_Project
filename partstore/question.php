@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				}
 				if($_FILES['file']['size'] > (2100000)) {		//can't be larger than 2 MB
 					$valid_file = false;
-					$errors[] = 'Your file\'s size is to large!';
+					$errors[] = 'Your file\'s size is too large!';
 				}
 			} else {
 				$valid_file = false;
@@ -43,8 +43,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 		if ($reply && $valid_file) {
 			$name = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
-			
-			$q = "INSERT INTO answers (question_id, answer, answered_by) VALUES ('$question_number', '$reply', '$name')";
+			$datetime = date('m-d-Y H:i:s');
+
+			$q = "INSERT INTO answers (question_id, answer, answered_by, date_time) VALUES ('$question_number', '$reply', '$name', '$datetime')";
 	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 	        if (mysqli_affected_rows($dbc) != 1) {
@@ -112,7 +113,7 @@ mysqli_free_result($r);
 function displayQuestion($questions, $question_file) {
 	foreach ($questions as &$question) {
 		echo '<div class="panel-heading">'
-			 . '<h3 class="panel-title">' . $question['question_title'] . ' (Asked by <strong>' . $question['asked_by'] . '</strong>)</h3>'
+			 . '<h3 class="panel-title">' . $question['question_title'] . ' (Asked by <strong>' . $question['asked_by'] . '</strong>) - '.$question['date_time'].'</h3>'
 			 . '</div>'
 			 . '<div class="panel-body">' . $question['question']
 			 . '<br><br>'
@@ -130,7 +131,7 @@ function displayReplies($dbc, $replies) {
 			$reply_file=mysqli_fetch_array($r);
 
 			echo '<div class="panel-heading">'
-				 . '<h3 class="panel-title"><strong>' . $reply['answered_by'] . '</strong> replied:</h3>'
+				 . '<h3 class="panel-title"><strong>' . $reply['answered_by'] . ' (' . $reply['date_time'] . ')</strong> replied:</h3>'
 				 . '</div>'
 				 . '<div class="panel-body">' . $reply['answer']
 				 . '<br><br>'
