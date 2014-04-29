@@ -1,13 +1,16 @@
-<?php 
+<?php  // File for displaying all questions to the user.
 session_start(); 
 
+// Import the required files.
 require('css/config.inc.php');
 require (MYSQL);
 
+// If the user submitting a new question.
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if(!empty($_SESSION['firstName'])) {
 		$errors = array();
 
+		// Valid the question title.
 		if (!empty($_POST['newQuestion'])) {
 			$question_title = mysqli_real_escape_string ($dbc, $_POST['newQuestion']);
 		} else {
@@ -15,6 +18,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$errors[] = '<p class="error"> - You forgot to enter a question!</p>';
 		}
 
+		// validate the question details.
 		if (!empty($_POST['newQuestionDetails'])) {
 			$question = mysqli_real_escape_string ($dbc, $_POST['newQuestionDetails']);
 		} else {
@@ -22,16 +26,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$errors[] = '<p class="error"> - You forgot to enter details about your question!</p>';
 		}
 
+		// Determine if the user uploaded a file with the question.
 		$valid_file = true;
 		if($_FILES['file']['name']) {
 			$file_uploaded = true;
 			if(!$_FILES['file']['error']) {
 				$name = $_FILES["file"]["name"];
 				$ext = end((explode(".", $name)));
+
+				// Make sure the user uploaded a file that is an approved file types.
 				if(!in_array($_FILES['file']['type'], $approved_file_types) && !in_array($ext, $approved_file_exts)) {
 					$valid_file = false;
 					$errors[] = 'You uploaded a file type that is not accepted.  Here is a list of the accepted file types: .pdf, .txt, .jpeg, .jpg, .png, .gif, .tiff, .bmp';
 				}
+
+				// Make sure the user uploaded a file within the the size limit.
 				if($_FILES['file']['size'] > (2100000)) {		//can't be larger than 2 MB
 					$valid_file = false;
 					$errors[] = 'Your file\'s size is too large!';
@@ -44,9 +53,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$file_uploaded = false;
 		}
 
+		// If all values are validated, proceed.
 		$datetime = date('m-d-Y H:i:s');
 		if ($question_title && $question && $valid_file) {
 			$name = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
+
+			// Add the new question to the database.
 			$q = "INSERT INTO questions (question_title, question, asked_by, replies, date_time) VALUES ('$question_title', '$question', '$name', '0', '$datetime')";
 	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
@@ -59,6 +71,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	        	$q = "SELECT id FROM questions ORDER BY id DESC LIMIT 1";
 		        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
+		        // Upload the new file if one was uploaded.
 		        $question=mysqli_fetch_array($r);
 		        $question_id = $question['id'];
 				if($file_uploaded) {
@@ -88,6 +101,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 }
 
+// Retrieve all the questions from the database.
 $q = "SELECT * FROM questions";
 $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
@@ -99,6 +113,7 @@ mysqli_free_result($r);
 mysqli_close($dbc);
 
 function displayQuestions($questions) {
+	// Display all the questions to the user.
 	if($questions != "") {
 		foreach ($questions as &$question) {
 			echo '<tr><td><a href="question.php?question=' 
@@ -153,6 +168,7 @@ function displayQuestions($questions) {
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
+					// Show the username if they are logged in.
 					 if(isset($_SESSION['firstName'])) { 
 					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 					  }
@@ -164,6 +180,7 @@ function displayQuestions($questions) {
 					  }
 					  echo '</li>';
 					
+					// Only show the cart if they are logged in.
 					if(isset($_SESSION['firstName'])) {
 						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
 					}

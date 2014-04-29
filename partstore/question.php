@@ -1,17 +1,19 @@
-<?php 
+<?php //PHP file for question page.
 session_start(); 
 
+// Require the needed files and name sure the user selected a question.
 require('css/config.inc.php');
 if(!empty($_GET['question'])) {
 	$question_number = $_GET['question'];
 }
 require (MYSQL);
 
-
+// If the user submitting a new reply to a question.
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if(!empty($_SESSION['firstName'])) {
 		$errors = array();
 
+		// Validate the reply the user posted.
 		if (!empty($_POST['questionReply'])) {
 			$reply = mysqli_real_escape_string ($dbc, $_POST['questionReply']);
 		} else {
@@ -19,16 +21,21 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$errors[] = '<p class="error"> - You forgot to enter a reply!</p>';
 		}
 
+		// Determine if the user uploaded a file.
 		$valid_file = true;
 		if($_FILES['file']['name']) {
 			$file_uploaded = true;
 			if(!$_FILES['file']['error']) {
 				$name = $_FILES["file"]["name"];
 				$ext = end((explode(".", $name)));
+
+				// Make sure the user uploaded an apporved file type.
 				if(!in_array($_FILES['file']['type'], $approved_file_types) && !in_array($ext, $approved_file_exts)) {
 					$valid_file = false;
 					$errors[] = 'You uploaded a file type that is not accepted.  Here is a list of the accepted file types: .pdf, .txt, .jpeg, .jpg, .png, .gif, .tiff, .bmp';
 				}
+
+				// Make sure the user uploaded a file within the size limit.
 				if($_FILES['file']['size'] > (2100000)) {		//can't be larger than 2 MB
 					$valid_file = false;
 					$errors[] = 'Your file\'s size is too large!';
@@ -41,10 +48,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$file_uploaded = false;
 		}
 
+		// If the reply and file upload were valid.
 		if ($reply && $valid_file) {
 			$name = $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 			$datetime = date('m-d-Y H:i:s');
 
+			// Add the new reply to the database.
 			$q = "INSERT INTO answers (question_id, answer, answered_by, date_time) VALUES ('$question_number', '$reply', '$name', '$datetime')";
 	        $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
@@ -55,6 +64,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 				echo '</div></div></div>';
 	        	
 	        } else {
+	        	// Increment the reply count on the question.
 	        	$q = "UPDATE questions SET replies = replies + 1 WHERE id = $question_number";
 	        	$r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
@@ -63,6 +73,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 		        $reply=mysqli_fetch_array($r);
 		        $reply_id = $reply['id'];
+
+		        // Save the uploaded file.
 				if($file_uploaded) {
 					$name = $_FILES["file"]["name"];
 					$ext = end((explode(".", $name)));
@@ -89,12 +101,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 }
 
+// Get the current question.
 $q = "SELECT * FROM questions" . " WHERE id=" . $question_number;
 $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 while($row = mysqli_fetch_array($r)) 
 {  	$questions[] = $row;  }
 
+// Get the current replies for the questions.
 $q = "SELECT * FROM answers" . " WHERE question_id=" . $question_number;
 $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
@@ -102,15 +116,16 @@ $replies = "";
 while($row = mysqli_fetch_array($r)) 
 {  	$replies[] = $row;  }
 
+// Get all the uploaded files for the replies and questions.
 $q = "SELECT * FROM uploaded_files" . " WHERE post_number=" . $question_number . " AND post_type='question'";
 $r = mysqli_query ($dbc, $q) or trigger_error("Query: $q\n<br />MySQL Error: " . mysqli_error($dbc));
 
 $question_file=mysqli_fetch_array($r);
 
 mysqli_free_result($r);
-//mysqli_close($dbc);
 
 function displayQuestion($questions, $question_file) {
+	// Loop through the question and display them to the user.
 	foreach ($questions as &$question) {
 		echo '<div class="panel-heading">'
 			 . '<h3 class="panel-title">' . $question['question_title'] . ' (Asked by <strong>' . $question['asked_by'] . '</strong>) - '.$question['date_time'].'</h3>'
@@ -123,6 +138,7 @@ function displayQuestion($questions, $question_file) {
 }
 
 function displayReplies($dbc, $replies) {
+	// Loop through the replies and display them to the user.
 	if($replies != "") {
 		foreach ($replies as &$reply) {
 			$q = "SELECT * FROM uploaded_files" . " WHERE post_number=" . $reply['id'] . " AND post_type='reply'";
@@ -188,6 +204,7 @@ function displayReplies($dbc, $replies) {
                 </ul>
 				<ul class="nav navbar-nav navbar-right">
 					<?php 
+					// Show the username if the user is logged in.
 					 if(isset($_SESSION['firstName'])) { 
 					       echo '<li class="userHeader">' . 'Logged in as ' . $_SESSION['firstName'] . ' ' . $_SESSION['lastName'];
 					  }
@@ -199,6 +216,7 @@ function displayReplies($dbc, $replies) {
 					  }
 					  echo '</li>';
 					
+					// Only show the cart if the user is logged in.
 					if(isset($_SESSION['firstName'])) {
 						echo '<li><a href="cart.php">Cart &nbsp;<span class="badge">'. $_SESSION['shopping_cart_count'] .'</span></a></li>';
 					}
